@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --passion-red: #ff3b3b;
+  --discovery-green: #22c55e;
+  --progression-blue: #3b82f6;
+}
+
+@layer base {
+  html {
+    /* Empêche le zoom iOS sur focus input */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-white text-gray-900 antialiased;
+  }
+
+  /* Scrollbar discrète */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { @apply bg-transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-gray-300 rounded-full; }
+}
+
+@layer components {
+  /* Bouton principal */
+  .btn-primary {
+    @apply w-full bg-passion-500 text-white font-semibold py-4 px-6 rounded-2xl
+           text-lg active:scale-95 transition-transform duration-100
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Bouton secondaire */
+  .btn-secondary {
+    @apply w-full bg-gray-100 text-gray-900 font-semibold py-4 px-6 rounded-2xl
+           text-lg active:scale-95 transition-transform duration-100;
+  }
+
+  /* Badge type session */
+  .badge-discovery {
+    @apply inline-flex items-center gap-1.5 bg-discovery-light text-discovery-dark
+           text-sm font-semibold px-3 py-1 rounded-full;
+  }
+
+  .badge-progression {
+    @apply inline-flex items-center gap-1.5 bg-progression-light text-progression-dark
+           text-sm font-semibold px-3 py-1 rounded-full;
+  }
+
+  /* Container page mobile */
+  .page-container {
+    @apply max-w-lg mx-auto px-4 pb-32;
+  }
+
+  /* Sticky bottom bar (CTA réservation) */
+  .sticky-bottom {
+    @apply fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100
+           px-4 py-4 z-50 max-w-lg mx-auto;
+  }
+}
+
+@layer utilities {
+  /* Safe area pour iPhone notch/home bar */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+}

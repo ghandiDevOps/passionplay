@@ -1,0 +1,39 @@
+import { createClient } from "@supabase/supabase-js";
+
+// Client Supabase côté serveur (service role — accès complet)
+export const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
+);
+
+// Client Supabase côté client (anon key — accès limité par RLS)
+export const supabaseClient = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+);
+
+/**
+ * Abonnement Realtime sur les changements de spots_taken d'une session
+ * Usage côté client dans use-spots-realtime.ts
+ */
+export function subscribeToSessionSpots(
+  sessionId: string,
+  onUpdate: (spotsTaken: number) => void,
+) {
+  return supabaseClient
+    .channel(`session-spots-${sessionId}`)
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "sessions",
+        filter: `id=eq.${sessionId}`,
+      },
+      (payload) => {
+        const spotsTaken = (payload.new as { spots_taken: number }).spots_taken;
+        onUpdate(spotsTaken);
+      },
+    )
+    .subscribe();
+}

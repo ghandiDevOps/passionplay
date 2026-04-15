@@ -1,0 +1,52 @@
+{
+  "name": "passionplay",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "db:seed": "ts-node prisma/seed.ts",
+    "db:generate": "prisma generate"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^5.1.0",
+    "@hookform/resolvers": "^3.4.2",
+    "@prisma/client": "^5.13.0",
+    "@react-email/components": "^0.0.18",
+    "@sentry/nextjs": "^8.6.0",
+    "@stripe/react-stripe-js": "^2.7.1",
+    "@stripe/stripe-js": "^3.4.0",
+    "@supabase/supabase-js": "^2.43.1",
+    "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
+    "geist": "^1.7.0",
+    "jsqr": "^1.4.0",
+    "next": "14.2.3",
+    "qrcode.react": "^3.1.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.51.4",
+    "resend": "^3.2.0",
+    "stripe": "^15.7.0",
+    "svix": "^1.90.0",
+    "tailwind-merge": "^2.3.0",
+    "zod": "^3.23.6",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "postcss": "^8",
+    "prisma": "^5.13.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}

@@ -1,0 +1,315 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─── Enums ─────────────────────────────────────────────────────────────────
+
+enum UserRole {
+  coach
+  participant
+  admin
+}
+
+enum SessionType {
+  discovery   // Découverte
+  progression // Progression
+}
+
+enum SessionDomain {
+  sport
+  music
+  cooking
+  language
+  business
+  art
+  other
+}
+
+enum SessionStatus {
+  draft
+  published
+  full
+  completed
+  cancelled
+}
+
+enum BookingStatus {
+  pending    // Paiement initié, non confirmé
+  confirmed  // Paiement validé, QR code actif
+  attended   // QR code scanné, présence confirmée
+  no_show    // Session passée sans scan
+  cancelled  // Annulé — remboursé
+}
+
+enum StripeOnboardingStatus {
+  not_started
+  pending
+  active
+  restricted
+}
+
+enum PayoutStatus {
+  pending
+  initiated
+  completed
+  failed
+}
+
+enum NotificationType {
+  booking_confirmation
+  booking_reminder_d1
+  booking_reminder_h2
+  session_post_review
+  new_booking_coach
+  session_full_coach
+  session_cancelled
+  waitlist_spot_available
+  payout_completed
+}
+
+enum NotificationChannel {
+  email
+  sms
+  push
+}
+
+enum WaitlistStatus {
+  waiting
+  notified
+  converted
+  expired
+}
+
+enum CancellationBy {
+  participant
+  coach
+  system
+}
+
+// ─── Models ────────────────────────────────────────────────────────────────
+
+model User {
+  id             String    @id @default(uuid())
+  clerkId        String    @unique  // ID Clerk — utilisé pour la liaison auth
+  email          String    @unique
+  name           String
+  avatarUrl      String?
+  role           UserRole  @default(participant)
+  emailVerified  Boolean   @default(false)
+  deletedAt      DateTime? // Soft delete
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // Relations
+  coachProfile   CoachProfile?
+  bookings       Booking[]
+  reviews        Review[]
+  notifications  Notification[]
+
+  @@map("users")
+}
+
+model CoachProfile {
+  id                     String                 @id @default(uuid())
+  userId                 String                 @unique
+  bio                    String?                @db.VarChar(500)
+  specialties            String[]               @default([])
+  domains                SessionDomain[]        @default([])
+  instagramUrl           String?
+  tiktokUrl              String?
+  stripeAccountId        String?                @unique
+  stripeOnboardingStatus StripeOnboardingStatus @default(not_started)
+  avgRating              Float                  @default(0.0)
+  totalSessions          Int                    @default(0)
+  totalParticipants      Int                    @default(0)
+  createdAt              DateTime               @default(now())
+
+  // Relations
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessions Session[]
+  payouts  Payout[]
+
+  @@map("coach_profiles")
+}
+
+model Session {
+  id               String        @id @default(uuid())
+  coachId          String
+  venueId          String?
+  title            String        @db.VarChar(80)
+  tagline          String?       @db.VarChar(140)
+  description      String        @db.VarChar(1000)
+  sessionType      SessionType
+  domain           SessionDomain
+  category         String
+  skillFocus       String        @db.VarChar(100)
+  dateStart        DateTime
+  durationMin      Int           // 60 ou 120
+  locationAddress  String
+  locationLat      Float
+  locationLng      Float
+  priceCents       Int           // 1300–2000
+  maxSpots         Int           // 10–20
+  spotsTaken       Int           @default(0)
+  status           SessionStatus @default(draft)
+  slug             String        @unique
+  coverImageUrl    String?
+  cancellationReason String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  // Relations
+  coach          CoachProfile    @relation(fields: [coachId], references: [id])
+  venue          Venue?          @relation(fields: [venueId], references: [id])
+  bookings       Booking[]
+  reviews        Review[]
+  waitlistEntries WaitlistEntry[]
+  payout         Payout?
+
+  @@index([slug])
+  @@index([coachId])
+  @@index([dateStart])
+  @@index([status])
+  @@index([domain])
+  @@map("sessions")
+}
+
+model Booking {
+  id                    String          @id @default(uuid())
+  sessionId             String
+  userId                String?         // Nullable — guest checkout possible
+  participantEmail      String
+  participantName       String
+  qrToken               String          @unique @default(uuid())
+  status                BookingStatus   @default(pending)
+  stripePaymentIntentId String?         @unique
+  stripeChargeId        String?
+  amountPaidCents       Int?
+  paidAt                DateTime?
+  scannedAt             DateTime?
+  cancelledAt           DateTime?
+  cancellationBy        CancellationBy?
+  refundedAt            DateTime?
+  createdAt             DateTime        @default(now())
+
+  // Relations
+  session  Session  @relation(fields: [sessionId], references: [id])
+  user     User?    @relation(fields: [userId], references: [id])
+  review   Review?
+
+  @@index([sessionId])
+  @@index([participantEmail])
+  @@index([qrToken])
+  @@index([stripePaymentIntentId])
+  @@map("bookings")
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  sessionId String
+  bookingId String   @unique  // 1 avis max par réservation
+  authorId  String
+  rating    Int      // 1–5
+  comment   String?  @db.VarChar(500)
+  isVisible Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  // Relations
+  session Session @relation(fields: [sessionId], references: [id])
+  booking Booking @relation(fields: [bookingId], references: [id])
+  author  User    @relation(fields: [authorId], references: [id])
+
+  @@index([sessionId])
+  @@index([authorId])
+  @@map("reviews")
+}
+
+model Venue {
+  id               String   @id @default(uuid())
+  name             String
+  address          String
+  lat              Float
+  lng              Float
+  sportsTags       String[] @default([])
+  capacity         Int?
+  pricePerHourCents Int?
+  contactUrl       String?
+  isPartner        Boolean  @default(false)
+  photosUrls       String[] @default([])
+  createdAt        DateTime @default(now())
+
+  // Relations
+  sessions Session[]
+
+  @@map("venues")
+}
+
+model WaitlistEntry {
+  id         String         @id @default(uuid())
+  sessionId  String
+  email      String
+  name       String
+  status     WaitlistStatus @default(waiting)
+  notifiedAt DateTime?
+  createdAt  DateTime       @default(now())
+
+  // Relations
+  session Session @relation(fields: [sessionId], references: [id])
+
+  @@unique([sessionId, email])  // 1 inscription par email par session
+  @@index([sessionId])
+  @@index([status])
+  @@map("waitlist_entries")
+}
+
+model Payout {
+  id               String       @id @default(uuid())
+  coachId          String
+  sessionId        String       @unique
+  grossAmountCents Int
+  platformFeeCents Int
+  netAmountCents   Int
+  stripeTransferId String?      @unique
+  status           PayoutStatus @default(pending)
+  initiatedAt      DateTime?
+  completedAt      DateTime?
+  createdAt        DateTime     @default(now())
+
+  // Relations
+  coach   CoachProfile @relation(fields: [coachId], references: [id])
+  session Session      @relation(fields: [sessionId], references: [id])
+
+  @@index([coachId])
+  @@map("payouts")
+}
+
+model Notification {
+  id             String              @id @default(uuid())
+  userId         String?
+  recipientEmail String
+  type           NotificationType
+  channel        NotificationChannel @default(email)
+  subject        String
+  body           String              @db.Text
+  metadata       Json?               // { session_id, booking_id, etc. }
+  sent           Boolean             @default(false)
+  error          String?
+  scheduledAt    DateTime
+  sentAt         DateTime?
+  createdAt      DateTime            @default(now())
+
+  // Relations
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([sent])
+  @@index([scheduledAt])
+  @@index([type])
+  @@map("notifications")
+}
