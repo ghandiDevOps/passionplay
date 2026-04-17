@@ -1,11 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { timingSafeEqual } from "crypto";
 
 // Sécurité : ce cron ne peut être appelé que par Vercel Cron
 // Vercel envoie un header Authorization avec le CRON_SECRET
 export async function GET(req: NextRequest) {
-  const authHeader = req.headers.get("authorization");
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  const authHeader = req.headers.get("authorization") ?? "";
+  const expected   = `Bearer ${process.env.CRON_SECRET ?? ""}`;
+
+  // FIX #18 — timingSafeEqual pour éviter les timing attacks (comparaison constante)
+  const aBuffer = Buffer.from(authHeader.padEnd(expected.length));
+  const bBuffer = Buffer.from(expected.padEnd(authHeader.length));
+  const isValid =
+    aBuffer.length === bBuffer.length &&
+    timingSafeEqual(aBuffer, bBuffer);
+
+  if (!isValid) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 

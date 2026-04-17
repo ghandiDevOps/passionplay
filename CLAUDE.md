@@ -55,16 +55,18 @@ fond                        #080808
 
 ## État d'avancement
 
-| Phase | Statut |
-|-------|--------|
-| Docs + scaffold code | ✅ Fait |
-| Flyers coachs V3 | ✅ Fait (marketing/flyers/) |
-| **Phase 0 — Infra** | 🔄 En cours (guide → docs/phases/PHASE_0_SETUP.md) |
-| Phase 1 — Auth + Onboarding | ⏳ |
-| Phase 2 — Sessions + page publique | ⏳ |
-| Phase 3 — Réservation + paiement | ⏳ |
-| Phase 4 — QR Code scan | ⏳ |
-| Phase 5 — Lancement | ⏳ |
+| Phase | Statut | Détail |
+|-------|--------|--------|
+| Docs + scaffold | ✅ Fait | — |
+| Flyers coachs V3 | ✅ Fait | marketing/flyers/ |
+| Phase 0 — Infra | ✅ Fait | Next.js, Prisma, Clerk, Stripe, Supabase, Resend — .env.local complet |
+| Phase 1 — Auth | ✅ Fait | sign-in, sign-up, onboarding, webhook Clerk, middleware |
+| Phase 2 — Sessions | ⚠️ Partiel | Page publique `/s/[slug]` ✅ — Formulaire création ❌ |
+| Phase 3 — Paiement | 🔄 En cours | Reserve API ✅, booking form ✅, **page payment ✅ (2026-04-16)**, confirmation ✅ |
+| Phase 4 — QR Scan | ⚠️ Partiel | API scan ✅ — Composants scanner UI ❌ |
+| Phase 5 — Lancement | ⏳ | — |
+
+> 📋 Suivi détaillé session par session → `../LAST_SESSION.md`
 
 ---
 

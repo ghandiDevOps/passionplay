@@ -24,7 +24,9 @@ export default async function ConfirmationPage({ searchParams }: Props) {
     },
   });
 
-  if (!booking || booking.status === "pending") notFound();
+  if (!booking || (booking.status !== "confirmed" && booking.status !== "attended")) {
+    notFound();
+  }
 
   const { session } = booking;
 
@@ -152,5 +154,5 @@ function generateIcalUrl({
     "END:VCALENDAR",
   ].join("\r\n");
 
-  return `data:text/calendar;charset=utf8,${encodeURIComponent(ical)}`;
+  return `data:text/calendar;charset=utf-8,${encodeURIComponent(ical)}`;
 }

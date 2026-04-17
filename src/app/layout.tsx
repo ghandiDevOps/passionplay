@@ -1,8 +1,17 @@
 import type { Metadata, Viewport } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
+import { Barlow_Condensed } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "@/styles/globals.css";
+
+const barlowCondensed = Barlow_Condensed({
+  weight: ["400", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-barlow-condensed",
+  display: "swap",
+});
 
 
 export const metadata: Metadata = {
@@ -39,7 +48,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="fr" suppressHydrationWarning>
         <body
-          className={`${GeistSans.variable} ${GeistMono.variable} font-sans`}
+          className={`${GeistSans.variable} ${GeistMono.variable} ${barlowCondensed.variable} font-sans bg-[#1a1a1a] text-white`}
         >
           {children}
         </body>

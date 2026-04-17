@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { constructWebhookEvent } from "@/lib/stripe";
 import { db } from "@/lib/db";
 import { generateQrToken } from "@/lib/utils/generate-qr-token";
-import { addMinutes, subHours, subDays } from "date-fns";
+import { addMinutes, subHours, subDays, set } from "date-fns";
 import type Stripe from "stripe";
 
 export async function POST(req: NextRequest) {
@@ -24,21 +24,21 @@ export async function POST(req: NextRequest) {
   try {
     switch (event.type) {
 
-      // ── Paiement confirmé ───────────────────────────────────────────────
+      // ── Paiement confirmé ─────────────────────────────────────────────────
       case "payment_intent.succeeded": {
         const pi = event.data.object as Stripe.PaymentIntent;
         await handlePaymentSucceeded(pi);
         break;
       }
 
-      // ── Remboursement ───────────────────────────────────────────────────
+      // ── Remboursement ─────────────────────────────────────────────────────
       case "charge.refunded": {
         const charge = event.data.object as Stripe.Charge;
         await handleChargeRefunded(charge);
         break;
       }
 
-      // ── Stripe Connect : compte activé ──────────────────────────────────
+      // ── Stripe Connect : compte mis à jour ────────────────────────────────
       case "account.updated": {
         const account = event.data.object as Stripe.Account;
         await handleAccountUpdated(account);
@@ -46,61 +46,64 @@ export async function POST(req: NextRequest) {
       }
 
       default:
-        // Ignorer les événements non gérés
         break;
     }
   } catch (err) {
     console.error(`[Stripe Webhook] Handler error (${event.type}):`, err);
-    // Retourner 500 pour que Stripe retente le webhook
+    // Retourner 500 → Stripe retente automatiquement
     return NextResponse.json({ error: "Handler error" }, { status: 500 });
   }
 
   return NextResponse.json({ received: true });
 }
 
-// ── Handlers ────────────────────────────────────────────────────────────────
+// ── Handlers ──────────────────────────────────────────────────────────────────
 
 async function handlePaymentSucceeded(pi: Stripe.PaymentIntent) {
   const bookingId = pi.metadata?.booking_id;
   if (!bookingId) return;
 
-  // Idempotence : si déjà confirmé, on ignore
+  // FIX #6 — Idempotence stricte : on ne traite que les bookings "pending"
+  // Un booking "confirmed" ou "attended" ne doit jamais être re-traité
   const existing = await db.booking.findUnique({ where: { id: bookingId } });
-  if (!existing || existing.status === "confirmed") return;
+  if (!existing || existing.status !== "pending") return;
 
-  // Transaction atomique
   await db.$transaction(async (tx) => {
-    // 1. Confirmer le booking
+    const chargeId =
+      typeof pi.latest_charge === "string"
+        ? pi.latest_charge
+        : (pi as any).charges?.data?.[0]?.id;
+
+    if (!chargeId) {
+      throw new Error("MISSING_CHARGE_ID");
+    }
+
     const booking = await tx.booking.update({
       where: { id: bookingId },
       data: {
-        status:          "confirmed",
-        stripeChargeId:  pi.latest_charge as string,
-        amountPaidCents: pi.amount_received,
-        paidAt:          new Date(),
-        qrToken:         generateQrToken(), // Régénérer après paiement confirmé
+        status:                 "confirmed",
+        stripeChargeId:         chargeId,
+        amountPaidCents:        pi.amount_received,
+        paidAt:                 new Date(),
+        qrToken:                generateQrToken(),
       },
     });
 
-    // 2. Incrémenter spots_taken (atomique)
-    const session = await tx.session.update({
+    const session = await tx.session.findUnique({
       where: { id: booking.sessionId },
-      data:  { spotsTaken: { increment: 1 } },
     });
 
-    // 3. Si session pleine → passer en "full"
-    if (session.spotsTaken >= session.maxSpots) {
-      await tx.session.update({
-        where: { id: session.id },
-        data:  { status: "full" },
-      });
+    if (!session) {
+      throw new Error("SESSION_NOT_FOUND");
     }
 
-    // 4. Planifier les rappels
-    const dateStart = session.dateStart;
-    const reminderD1 = subDays(new Date(dateStart.setHours(18, 0, 0, 0)), 1);
-    const reminderH2 = subHours(dateStart, 2);
-    const postSession = addMinutes(addMinutes(dateStart, session.durationMin), 120);
+    // FIX #5 — Date mutation : on crée une nouvelle Date immutable
+    // new Date(dateStart.setHours(...)) mutait l'objet original
+    const dateStart   = new Date(session.dateStart);
+    const dateAt18h   = set(new Date(dateStart), { hours: 18, minutes: 0, seconds: 0, milliseconds: 0 });
+    const reminderD1  = subDays(dateAt18h, 1);
+    const reminderH2  = subHours(dateStart, 2);
+    const postSession = addMinutes(dateStart, session.durationMin + 120);
 
     await tx.notification.createMany({
       data: [
@@ -143,24 +146,74 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
     where: { stripePaymentIntentId: charge.payment_intent as string },
   });
 
-  if (!booking) return;
+  // FIX #4 — Transaction complète (fichier était tronqué)
+  if (!booking || booking.status === "cancelled") return;
 
-  await db.booking.update({
-    where: { id: booking.id },
-    data: {
-      status:     "cancelled",
-      refundedAt: new Date(),
-    },
+  const session = await db.session.findUnique({
+    where: { id: booking.sessionId },
   });
+
+  const now = new Date();
+
+  // Annulation uniquement si la session n'a pas encore eu lieu
+  if (session && booking.status === "confirmed" && session.dateStart > now) {
+    const sessionUpdateData: Record<string, unknown> = {
+      spotsTaken: { decrement: 1 },
+    };
+
+    // Réouvrir la session si elle était "full"
+    if (session.status === "full" && session.spotsTaken - 1 < session.maxSpots) {
+      sessionUpdateData.status = "published";
+    }
+
+    await db.$transaction([
+      db.booking.update({
+        where: { id: booking.id },
+        data:  { status: "cancelled" },
+      }),
+      db.session.update({
+        where: { id: session.id },
+        data:  sessionUpdateData,
+      }),
+    ]);
+
+    console.log(`[Stripe] Booking ${booking.id} cancelled via refund`);
+  } else {
+    // Session déjà passée : on annule juste le booking sans toucher aux places
+    await db.booking.update({
+      where: { id: booking.id },
+      data:  { status: "cancelled" },
+    });
+    console.log(`[Stripe] Booking ${booking.id} cancelled (post-session refund)`);
+  }
 }
 
+// FIX #3 — Fonction manquante : active le coach quand Stripe Connect est complet
 async function handleAccountUpdated(account: Stripe.Account) {
-  if (!account.charges_enabled) return;
+  // charges_enabled = true → le coach peut recevoir des paiements
+  const isActive =
+    account.charges_enabled &&
+    account.details_submitted &&
+    !account.requirements?.currently_due?.length;
 
-  await db.coachProfile.updateMany({
+  if (!isActive) return;
+
+  // Mettre à jour le statut du coach dans la base
+  const coach = await db.coachProfile.findFirst({
     where: { stripeAccountId: account.id },
+  });
+
+  if (!coach) {
+    console.warn(`[Stripe] account.updated: no coach found for account ${account.id}`);
+    return;
+  }
+
+  if (coach.stripeOnboardingStatus === "active") return; // Déjà activé, idempotence
+
+  await db.coachProfile.update({
+    where: { id: coach.id },
     data:  { stripeOnboardingStatus: "active" },
   });
 
-  console.log(`[Stripe Connect] Account ${account.id} activated`);
+  console.log(`[Stripe] Coach ${coach.id} Stripe Connect activated`);
 }

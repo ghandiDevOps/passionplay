@@ -41,8 +41,9 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-geist-mono)", "monospace"],
+        sans:    ["var(--font-geist-sans)", "system-ui", "sans-serif"],
+        mono:    ["var(--font-geist-mono)", "monospace"],
+        display: ["var(--font-barlow-condensed)", "Barlow Condensed", "sans-serif"],
       },
       animation: {
         "fade-in": "fadeIn 0.3s ease-out",

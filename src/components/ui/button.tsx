@@ -1,82 +1,66 @@
-"use client";
+import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "@/lib/utils"
 
-import { cn } from "@/lib/utils/cn";
-import { type ButtonHTMLAttributes, forwardRef } from "react";
+const buttonVariants = cva(
+  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default:     "bg-[#FF7A00] text-white hover:bg-[#FF3D00]",
+        outline:     "border border-[#2a2a2a] bg-transparent text-white hover:border-[#FF7A00] hover:text-[#FF7A00]",
+        secondary:   "bg-[#1e1e1e] text-white hover:bg-[#2a2a2a]",
+        ghost:       "hover:bg-[#1e1e1e] hover:text-white",
+        destructive: "bg-red-600 text-white hover:bg-red-700",
+        link:        "text-[#FF7A00] underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-9 px-4 py-2",
+        xs:      "h-6 px-2 text-xs",
+        sm:      "h-8 px-3 text-xs",
+        lg:      "h-11 px-8 text-base",
+        icon:    "h-9 w-9",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size:    "default",
+    },
+  }
+)
 
-type Variant = "primary" | "secondary" | "ghost" | "danger";
-type Size    = "sm" | "md" | "lg";
-
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: Variant;
-  size?: Size;
-  loading?: boolean;
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
   fullWidth?: boolean;
+  loading?: boolean;
 }
 
-const variantClasses: Record<Variant, string> = {
-  primary:   "bg-passion-500 text-white hover:bg-passion-600 active:bg-passion-700",
-  secondary: "bg-gray-100 text-gray-900 hover:bg-gray-200 active:bg-gray-300",
-  ghost:     "bg-transparent text-gray-600 hover:bg-gray-100",
-  danger:    "bg-red-500 text-white hover:bg-red-600",
-};
-
-const sizeClasses: Record<Size, string> = {
-  sm: "py-2 px-4 text-sm rounded-xl",
-  md: "py-3 px-5 text-base rounded-2xl",
-  lg: "py-4 px-6 text-lg rounded-2xl",
-};
-
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      variant = "primary",
-      size = "lg",
-      loading = false,
-      fullWidth = false,
-      disabled,
-      className,
-      children,
-      ...props
-    },
-    ref,
-  ) => {
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, fullWidth, loading, children, disabled, ...props }, ref) => {
     return (
       <button
+        className={cn(
+          buttonVariants({ variant, size, className }),
+          fullWidth && "w-full",
+        )}
         ref={ref}
         disabled={disabled || loading}
-        className={cn(
-          "font-semibold transition-all duration-100 active:scale-95",
-          "disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100",
-          "focus:outline-none focus-visible:ring-2 focus-visible:ring-passion-500",
-          variantClasses[variant],
-          sizeClasses[size],
-          fullWidth && "w-full",
-          className,
-        )}
         {...props}
       >
         {loading ? (
-          <span className="flex items-center justify-center gap-2">
-            <Spinner size="sm" />
+          <span className="flex items-center gap-2">
+            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+            </svg>
             {children}
           </span>
-        ) : (
-          children
-        )}
+        ) : children}
       </button>
-    );
-  },
-);
+    )
+  }
+)
+Button.displayName = "Button"
 
-Button.displayName = "Button";
-
-// Spinner inline
-function Spinner({ size }: { size: "sm" | "md" }) {
-  const s = size === "sm" ? "h-4 w-4" : "h-5 w-5";
-  return (
-    <svg className={cn("animate-spin", s)} viewBox="0 0 24 24" fill="none">
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z" />
-    </svg>
-  );
-}
+export { Button, buttonVariants }

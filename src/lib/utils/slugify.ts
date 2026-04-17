@@ -1,6 +1,21 @@
 import { db } from "@/lib/db";
 
 /**
+ * Convertit une chaîne en slug kebab-case (export utilitaire)
+ */
+export function slugify(str: string): string {
+  return str
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .slice(0, 80);
+}
+
+/**
  * Convertit une chaîne en slug kebab-case
  */
 function toKebabCase(str: string): string {

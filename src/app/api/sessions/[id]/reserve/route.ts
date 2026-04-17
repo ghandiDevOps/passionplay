@@ -38,22 +38,48 @@ export async function POST(
         throw new Error("SESSION_NOT_FOUND");
       }
 
-      if (session.status !== "published" && session.status !== "full") {
+      if (session.status !== "published") {
         throw new Error("SESSION_NOT_AVAILABLE");
-      }
-
-      if (session.spotsTaken >= session.maxSpots) {
-        throw new Error("SESSION_FULL");
       }
 
       if (!session.coach.stripeAccountId) {
         throw new Error("COACH_STRIPE_NOT_CONFIGURED");
       }
 
-      // ── 2. Créer le Booking en status "pending" ──────────────────────────
+      const reservation = await tx.session.updateMany({
+        where: {
+          id: params.id,
+          status: "published",
+          spotsTaken: { lt: session.maxSpots },
+        },
+        data: {
+          spotsTaken: { increment: 1 },
+        },
+      });
+
+      if (reservation.count === 0) {
+        throw new Error("SESSION_FULL");
+      }
+
+      const updatedSession = await tx.session.findUnique({
+        where: { id: params.id },
+        include: { coach: true },
+      });
+
+      if (!updatedSession) {
+        throw new Error("SESSION_NOT_FOUND");
+      }
+
+      if (updatedSession.spotsTaken >= updatedSession.maxSpots) {
+        await tx.session.update({
+          where: { id: updatedSession.id },
+          data: { status: "full" },
+        });
+      }
+
       const booking = await tx.booking.create({
         data: {
-          sessionId:        session.id,
+          sessionId:        updatedSession.id,
           participantEmail: email,
           participantName:  name,
           qrToken:          generateQrToken(),
@@ -61,7 +87,7 @@ export async function POST(
         },
       });
 
-      return { session, booking };
+      return { session: updatedSession, booking };
     });
 
     // ── 3. Créer le PaymentIntent Stripe ────────────────────────────────────
@@ -84,18 +110,22 @@ export async function POST(
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
       bookingId:    result.booking.id,
+      amountCents:  result.session.priceCents,
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "UNKNOWN";
+    // FIX #1 — Error handler was truncated
+    const code    = err instanceof Error ? err.message : "UNKNOWN";
+    const message = {
+      SESSION_NOT_FOUND:           "Session introuvable.",
+      SESSION_NOT_AVAILABLE:       "Cette session n'est plus disponible.",
+      SESSION_FULL:                "Désolé, il n'y a plus de place disponible.",
+      COACH_STRIPE_NOT_CONFIGURED: "Le paiement n'est pas encore activé pour ce coach.",
+    }[code] ?? "Une erreur est survenue. Réessaie.";
 
-    const errorMap: Record<string, [string, number]> = {
-      SESSION_NOT_FOUND:              ["Session introuvable", 404],
-      SESSION_NOT_AVAILABLE:          ["Cette session n'est plus disponible", 400],
-      SESSION_FULL:                   ["Session complète", 409],
-      COACH_STRIPE_NOT_CONFIGURED:    ["Paiement non disponible pour cette session", 400],
-    };
+    const status = code === "SESSION_NOT_FOUND" ? 404
+                 : code === "SESSION_FULL"       ? 409
+                 : 500;
 
-    const [error, status] = errorMap[message] ?? ["Erreur interne", 500];
-    return NextResponse.json({ error }, { status });
+    return NextResponse.json({ error: message, code }, { status });
   }
 }

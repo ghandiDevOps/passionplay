@@ -50,7 +50,7 @@ export default function BookingPage({ params }: Props) {
 
       // Redirection vers la page paiement avec le client_secret
       router.push(
-        `/book/${params.sessionId}/payment?client_secret=${json.clientSecret}&booking_id=${json.bookingId}`,
+        `/book/${params.sessionId}/payment?client_secret=${json.clientSecret}&booking_id=${json.bookingId}&amount=${json.amountCents}`,
       );
     } catch {
       setError("Problème de connexion. Réessaie dans un instant.");
@@ -109,11 +109,12 @@ export default function BookingPage({ params }: Props) {
             </div>
           </form>
 
+          {/* FIX #17 — Liens légaux corrigés (/cgu → /legal/cgu, /confidentialite → /legal/privacy) */}
           <p className="text-xs text-center text-gray-400">
             En continuant, tu acceptes les{" "}
-            <a href="/cgu" className="underline">CGU</a>{" "}
+            <a href="/legal/cgu" className="underline">CGU</a>{" "}
             et la{" "}
-            <a href="/confidentialite" className="underline">
+            <a href="/legal/privacy" className="underline">
               politique de confidentialité
             </a>
             .
