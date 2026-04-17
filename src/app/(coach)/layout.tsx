@@ -12,50 +12,58 @@ export default async function CoachLayout({
   if (!userId) redirect("/sign-in");
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header Coach */}
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
-        <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/dashboard" className="text-xl font-black text-passion-500">
-            PassionPlay
+    <div className="min-h-screen bg-[#111]">
+
+      {/* ── Header desktop ── */}
+      <header className="hidden sm:block sticky top-0 z-40 bg-[#111]/95 backdrop-blur-sm border-b border-[#2a2a2a]">
+        <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
+          <Link href="/dashboard" className="font-display text-xl text-white hover:text-[#FF7A00] transition-colors">
+            PASSIONPLAY
           </Link>
-          <div className="flex items-center gap-4">
-            <nav className="hidden sm:flex items-center gap-4 text-sm font-medium text-gray-600">
-              <Link href="/dashboard"  className="hover:text-gray-900">Dashboard</Link>
-              <Link href="/sessions"   className="hover:text-gray-900">Sessions</Link>
-              <Link href="/earnings"   className="hover:text-gray-900">Revenus</Link>
-            </nav>
+          <nav className="flex items-center gap-6">
+            <Link href="/dashboard"    className="font-display-md text-xs text-[#555] hover:text-white transition-colors">DASHBOARD</Link>
+            <Link href="/sessions"     className="font-display-md text-xs text-[#555] hover:text-white transition-colors">SESSIONS</Link>
+            <Link href="/earnings"     className="font-display-md text-xs text-[#555] hover:text-white transition-colors">REVENUS</Link>
+            <Link href="/sessions/new" className="btn-passion text-xs px-4 py-2 min-h-0">+ CRÉER</Link>
+          </nav>
+          <UserButton afterSignOutUrl="/" />
+        </div>
+      </header>
+
+      {/* ── Mobile header ── */}
+      <header className="sm:hidden sticky top-0 z-40 bg-[#111]/95 backdrop-blur-sm border-b border-[#2a2a2a]">
+        <div className="px-4 h-12 flex items-center justify-between">
+          <Link href="/dashboard" className="font-display text-lg text-white">PASSIONPLAY</Link>
+          <div className="flex items-center gap-3">
+            <Link href="/sessions/new" className="btn-passion text-xs px-3 py-1.5 min-h-0">+ CRÉER</Link>
             <UserButton afterSignOutUrl="/" />
           </div>
         </div>
       </header>
 
-      {/* Mobile nav */}
-      <nav className="sm:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-40 pb-safe">
+      {/* ── Contenu ── */}
+      <main className="max-w-5xl mx-auto pb-24 sm:pb-8">
+        {children}
+      </main>
+
+      {/* ── Mobile bottom nav ── */}
+      <nav className="sm:hidden fixed bottom-0 left-0 right-0 bg-[#111]/95 backdrop-blur-sm border-t border-[#2a2a2a] z-40">
         <div className="flex items-center justify-around py-2">
-          <NavItem href="/dashboard"      icon="🏠" label="Dashboard" />
-          <NavItem href="/sessions/new"   icon="➕" label="Créer"     />
-          <NavItem href="/sessions"       icon="📋" label="Sessions"  />
-          <NavItem href="/earnings"       icon="💰" label="Revenus"   />
+          <MobileNavItem href="/dashboard"  icon="▦" label="Dashboard" />
+          <MobileNavItem href="/sessions"   icon="◈" label="Sessions"  />
+          <MobileNavItem href="/earnings"   icon="◎" label="Revenus"   />
         </div>
       </nav>
 
-      {/* Contenu */}
-      <main className="max-w-lg mx-auto pb-24 sm:pb-8">
-        {children}
-      </main>
     </div>
   );
 }
 
-function NavItem({ href, icon, label }: { href: string; icon: string; label: string }) {
+function MobileNavItem({ href, icon, label }: { href: string; icon: string; label: string }) {
   return (
-    <Link
-      href={href}
-      className="flex flex-col items-center gap-1 px-4 py-1 text-gray-500 hover:text-passion-500"
-    >
-      <span className="text-xl">{icon}</span>
-      <span className="text-xs font-medium">{label}</span>
+    <Link href={href} className="flex flex-col items-center gap-0.5 px-5 py-1 text-[#555] hover:text-[#FF7A00] transition-colors">
+      <span className="text-base">{icon}</span>
+      <span className="font-display-md text-[9px] tracking-wider">{label}</span>
     </Link>
   );
 }
