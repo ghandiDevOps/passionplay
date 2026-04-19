@@ -1,87 +1,10 @@
 import Link from "next/link";
+import { db } from "@/lib/db";
+import { formatDateShort, formatTime } from "@/lib/utils/format-date";
+import { SessionCard, type SessionCardData } from "@/components/marketing/session-card";
 
-const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663566022686/R8mt4wVf2JUyTmz8XeetPY/hero-bg-dVxv5vPepkvmyNwENCoZaU.webp";
-
-const SESSIONS = [
-  {
-    id: "mma-frappe-defense",
-    title: "Initiation MMA — Frappe & Défense",
-    sport: "MMA",
-    coach: { name: "Karim D.", rating: 4.9 },
-    date: "Sam. 19 Avr · 10h00",
-    city: "Paris 11e",
-    price: 15,
-    totalSpots: 15,
-    remainingSpots: 4,
-    type: "discover" as const,
-    img: null,
-  },
-  {
-    id: "padel-smash",
-    title: "Padel — Maîtrise du Smash",
-    sport: "Padel",
-    coach: { name: "Sarah L.", rating: 4.8 },
-    date: "Dim. 20 Avr · 14h00",
-    city: "Paris 16e",
-    price: 18,
-    totalSpots: 12,
-    remainingSpots: 7,
-    type: "progress" as const,
-    img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663566022686/R8mt4wVf2JUyTmz8XeetPY/session-padel-Zdfd6iNhRVJu3HmS2Q2GTT.webp",
-  },
-  {
-    id: "football-tir-finition",
-    title: "Football — Tir & Finition",
-    sport: "Football",
-    coach: { name: "Samir B.", rating: 4.7 },
-    date: "Jeu. 24 Avr · 19h00",
-    city: "Lyon 3e",
-    price: 13,
-    totalSpots: 20,
-    remainingSpots: 11,
-    type: "discover" as const,
-    img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663566022686/R8mt4wVf2JUyTmz8XeetPY/session-football-BSe6zFB89d3eZdZuFucsFP.webp",
-  },
-  {
-    id: "boxe-jab-crochet",
-    title: "Boxe — Jab & Crochet Parfait",
-    sport: "Boxe",
-    coach: { name: "Leila M.", rating: 4.9 },
-    date: "Sam. 26 Avr · 09h30",
-    city: "Paris 20e",
-    price: 17,
-    totalSpots: 10,
-    remainingSpots: 2,
-    type: "progress" as const,
-    img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663566022686/R8mt4wVf2JUyTmz8XeetPY/session-boxe-EQiqxzCpNe7HC86FY4bwkp.webp",
-  },
-  {
-    id: "basket-3pts",
-    title: "Basket — Tir à 3 Points",
-    sport: "Basket",
-    coach: { name: "Thomas R.", rating: 4.8 },
-    date: "Dim. 27 Avr · 11h00",
-    city: "Lyon 7e",
-    price: 20,
-    totalSpots: 12,
-    remainingSpots: 5,
-    type: "progress" as const,
-    img: null,
-  },
-  {
-    id: "mma-clinch",
-    title: "MMA — Clinch & Projections",
-    sport: "MMA",
-    coach: { name: "Karim D.", rating: 4.9 },
-    date: "Lun. 28 Avr · 19h00",
-    city: "Paris 11e",
-    price: 15,
-    totalSpots: 10,
-    remainingSpots: 8,
-    type: "progress" as const,
-    img: null,
-  },
-];
+const HERO_IMG =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310519663566022686/R8mt4wVf2JUyTmz8XeetPY/hero-bg-dVxv5vPepkvmyNwENCoZaU.webp";
 
 const TICKER_ITEMS = [
   { n: "127+", l: "SESSIONS" },
@@ -92,9 +15,42 @@ const TICKER_ITEMS = [
   { n: "30s",  l: "POUR RÉSERVER" },
 ];
 
-const SPORTS = ["Tous", "Football", "Basket", "MMA", "Padel", "Boxe", "Tennis", "Yoga"];
+function extractCity(address: string): string {
+  const parts = address.split(",");
+  return parts[parts.length - 1].trim();
+}
 
-export default function HomePage() {
+export default async function HomePage() {
+  const now = new Date();
+
+  const rawSessions = await db.session.findMany({
+    where: {
+      status:    { in: ["published", "full"] },
+      dateStart: { gte: now },
+    },
+    include: {
+      coach: { include: { user: true } },
+    },
+    orderBy: { dateStart: "asc" },
+    take: 6,
+  });
+
+  const sessions: SessionCardData[] = rawSessions.map((s) => ({
+    slug:          s.slug,
+    title:         s.title,
+    category:      s.category,
+    domain:        s.domain,
+    coachName:     s.coach.user.name,
+    coachRating:   s.coach.avgRating,
+    dateLabel:     `${formatDateShort(s.dateStart)} · ${formatTime(s.dateStart)}`,
+    city:          extractCity(s.locationAddress),
+    priceCents:    s.priceCents,
+    maxSpots:      s.maxSpots,
+    spotsTaken:    s.spotsTaken,
+    sessionType:   s.sessionType === "discovery" ? "discovery" : "progression",
+    coverImageUrl: s.coverImageUrl,
+  }));
+
   return (
     <div className="min-h-screen bg-[#1a1a1a] text-white">
 
@@ -104,15 +60,11 @@ export default function HomePage() {
           <Link href="/" className="font-display text-2xl text-white hover:text-[#FF7A00] transition-colors duration-120 shrink-0">
             PASSIONPLAY
           </Link>
-
-          {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-6">
             <Link href="/explore" className="font-display-md text-sm text-[#888] hover:text-white transition-colors">SESSIONS</Link>
-            <Link href="/sign-in" className="font-display-md text-sm text-[#888] hover:text-white transition-colors">CONNEXION</Link>
-            <Link href="/sign-up" className="btn-passion text-sm px-5 py-2.5 min-h-0">DEVENIR COACH</Link>
+            <Link href="/sign-in"  className="font-display-md text-sm text-[#888] hover:text-white transition-colors">CONNEXION</Link>
+            <Link href="/sign-up"  className="btn-passion text-sm px-5 py-2.5 min-h-0">DEVENIR COACH</Link>
           </div>
-
-          {/* Mobile nav */}
           <div className="flex md:hidden items-center gap-3">
             <Link href="/sign-in" className="font-display-md text-xs text-[#888]">CONNEXION</Link>
             <Link href="/sign-up" className="btn-passion text-xs px-3 py-2 min-h-0">COACH</Link>
@@ -137,11 +89,12 @@ export default function HomePage() {
               <span className="font-display-md text-xs text-[#FF7A00] tracking-[0.2em]">EXPÉRIENCES SPORTIVES · PETIT GROUPE</span>
             </div>
             <h1 className="font-display text-[clamp(3rem,8vw,7rem)] text-white leading-[0.88] mb-5">
-              VIS TA PASSION.<br />
-              <span className="text-[#FF7A00]">MAINTENANT.</span>
+              VIVEZ VOTRE PASSION.<br />
+              <span className="text-[#FF7A00]">TRANSMETTEZ LA VÔTRE.</span>
             </h1>
             <p className="text-[#aaa] text-base sm:text-lg max-w-md mb-8 leading-relaxed font-sans">
-              Une heure intense. Un expert passionné. 10–20 personnes max. Entre <strong className="text-white">13€ et 20€</strong>. Décide en 20 secondes.
+              Une heure intense. Un expert passionné. 10–20 personnes max.
+              Entre <strong className="text-white">13€ et 20€</strong>. Décide en 20 secondes.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/explore" className="btn-passion flex items-center justify-center gap-2 pulse-orange sm:text-base px-8">
@@ -172,10 +125,10 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-1 h-5 bg-[#FF7A00]" />
-          <span className="font-display-md text-xs text-[#FF7A00] tracking-[0.2em]">LES 2 TYPES</span>
+          <span className="font-display-md text-xs text-[#FF7A00] tracking-[0.2em]">DEUX FAÇONS DE VIVRE SA PASSION</span>
         </div>
         <h2 className="font-display text-4xl sm:text-5xl text-white mb-10">
-          Deux expériences.<br className="hidden sm:block" /> Une seule philosophie.
+          Ressentir pour la première fois.<br className="hidden sm:block" /> Ou débloquer ce qui bloque.
         </h2>
 
         <div className="grid md:grid-cols-2 gap-4">
@@ -187,7 +140,8 @@ export default function HomePage() {
             </div>
             <h3 className="font-display text-3xl text-white mb-3">Première fois.</h3>
             <p className="text-[#888] text-sm sm:text-base leading-relaxed font-sans">
-              Tu n&apos;as jamais essayé. Tu veux ressentir pour la première fois. Zéro prérequis. Zéro pression. Juste l&apos;envie.
+              Tu n&apos;as jamais essayé. Tu veux ressentir pour la première fois.
+              Zéro prérequis. Zéro pression. Juste l&apos;envie — et un passionné qui sait comment la transmettre.
             </p>
           </div>
           <div className="bg-[#1e1e1e] border border-[#2a2a2a] p-6 lg:p-8 relative overflow-hidden group hover:border-[#3b82f6]/40 transition-colors duration-200">
@@ -198,7 +152,8 @@ export default function HomePage() {
             </div>
             <h3 className="font-display text-3xl text-white mb-3">Débloquer un point précis.</h3>
             <p className="text-[#888] text-sm sm:text-base leading-relaxed font-sans">
-              Tu pratiques déjà. L&apos;expert est focalisé sur ta technique. Tu repars avec des clés concrètes et applicables immédiatement.
+              Tu pratiques déjà. L&apos;expert est focalisé sur ta technique.
+              Tu repars avec des clés concrètes, applicables immédiatement.
             </p>
           </div>
         </div>
@@ -217,7 +172,7 @@ export default function HomePage() {
             {[
               { n: "01", title: "TU CHOISIS", desc: "Un sport, une session, un coach. Tu vois les places en temps réel. Tu décides en 20 secondes." },
               { n: "02", title: "TU PAIES",   desc: "Apple Pay, Google Pay ou carte. 2 taps. Pas de compte obligatoire. Confirmation immédiate." },
-              { n: "03", title: "TU VIS",     desc: "Tu arrives. Tu montres ton QR code. Tu vis ta passion pendant 1h avec des gens comme toi." },
+              { n: "03", title: "TU VIS",     desc: "Tu arrives. Tu montres ton QR code. Tu vis ta passion pendant 1h avec des gens qui la partagent." },
             ].map((step) => (
               <div key={step.n} className="bg-[#111] p-8 lg:p-10 group">
                 <span className="font-display text-[5rem] lg:text-[7rem] text-[#FF7A00]/20 leading-none group-hover:text-[#FF7A00]/40 transition-colors duration-200 block">
@@ -233,7 +188,7 @@ export default function HomePage() {
 
       {/* ── SESSIONS ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="flex items-end justify-between mb-6">
+        <div className="flex items-end justify-between mb-10">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <div className="w-1 h-5 bg-[#FF7A00]" />
@@ -246,86 +201,28 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* Sport pills */}
-        <div className="flex gap-2 overflow-x-auto pb-4 mb-8 scrollbar-hide">
-          {SPORTS.map((sport, i) => (
-            <button key={sport} className={`shrink-0 font-display-md text-xs px-4 py-2 border transition-colors duration-120 whitespace-nowrap ${
-              i === 0 ? "bg-[#FF7A00] border-[#FF7A00] text-white" : "border-[#2a2a2a] text-[#555] hover:border-[#FF7A00] hover:text-[#FF7A00]"
-            }`}>
-              {sport}
-            </button>
-          ))}
-        </div>
-
-        {/* Session cards — 1 col mobile, 2 tablet, 3 desktop */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {SESSIONS.map((s) => {
-            const pct = Math.round((s.totalSpots - s.remainingSpots) / s.totalSpots * 100);
-            const urgent = s.remainingSpots <= 3;
-            return (
-              <Link href="/explore" key={s.id} className="session-card bg-[#1e1e1e] border border-[#2a2a2a] overflow-hidden group cursor-pointer block">
-                {/* Image */}
-                <div className="relative h-44 bg-[#2a2a2a] overflow-hidden">
-                  {s.img && (
-                    <img src={s.img} alt={s.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1e1e1e] via-transparent to-transparent" />
-                  <div className="absolute top-3 left-3 flex gap-2">
-                    <span className="badge-sport text-[10px] px-2 py-1">{s.sport}</span>
-                    <span className={s.type === "discover" ? "badge-discover" : "badge-progress"}>
-                      {s.type === "discover" ? "DÉCOUVERTE" : "PROGRESSION"}
-                    </span>
-                  </div>
-                  {urgent && (
-                    <div className="absolute top-3 right-3 flex items-center gap-1 bg-[#FF3D00]/90 px-2 py-1 text-[10px] font-bold font-display-md text-white">
-                      🔥 {s.remainingSpots} PLACES
-                    </div>
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="p-4">
-                  <h3 className="font-display text-lg text-white leading-tight mb-2 group-hover:text-[#FF7A00] transition-colors duration-120">
-                    {s.title}
-                  </h3>
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="w-5 h-5 rounded-full bg-[#333] shrink-0" />
-                    <span className="text-[#888] text-xs font-sans">{s.coach.name}</span>
-                    <span className="text-[#FF7A00] text-xs ml-auto">★ {s.coach.rating}</span>
-                  </div>
-                  <div className="text-[#666] text-xs font-sans mb-3">{s.city} · {s.date}</div>
-
-                  {/* Spots bar */}
-                  <div className="mb-4">
-                    <div className="flex justify-between text-xs font-sans mb-1">
-                      <span className={urgent ? "text-[#FF3D00]" : "text-[#555]"}>
-                        {s.remainingSpots} place{s.remainingSpots > 1 ? "s" : ""} restante{s.remainingSpots > 1 ? "s" : ""}
-                      </span>
-                      <span className="text-[#444]">{pct}%</span>
-                    </div>
-                    <div className="w-full bg-[#2a2a2a] h-px">
-                      <div className={`h-full ${urgent ? "bg-[#FF3D00]" : "bg-[#FF7A00]"}`} style={{ width: `${pct}%` }} />
-                    </div>
-                  </div>
-
-                  <div className="flex items-end justify-between">
-                    <div>
-                      <span className="font-display text-3xl text-[#FF7A00]">{s.price}€</span>
-                      <span className="font-display-md text-xs text-[#444] ml-1">/ pers.</span>
-                    </div>
-                    <span className="font-display-md text-xs text-[#FF7A00] hover:text-white transition-colors">RÉSERVER →</span>
-                  </div>
-                </div>
+        {sessions.length === 0 ? (
+          <div className="bg-[#1e1e1e] border border-[#2a2a2a] p-12 text-center">
+            <p className="font-display text-5xl text-[#2a2a2a] mb-4">BIENTÔT</p>
+            <p className="text-[#555] text-sm font-sans mb-6">
+              Les premières sessions arrivent. Deviens coach et sois parmi les premiers.
+            </p>
+            <Link href="/sign-up" className="btn-passion px-8">DEVENIR COACH →</Link>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {sessions.map((s) => (
+                <SessionCard key={s.slug} s={s} />
+              ))}
+            </div>
+            <div className="mt-8 flex justify-center">
+              <Link href="/explore" className="btn-passion flex items-center justify-center gap-2 sm:px-12">
+                TOUTES LES SESSIONS →
               </Link>
-            );
-          })}
-        </div>
-
-        <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href="/explore" className="btn-passion flex items-center justify-center gap-2 sm:px-12">
-            TOUTES LES SESSIONS →
-          </Link>
-        </div>
+            </div>
+          </>
+        )}
       </section>
 
       {/* ── COACH CTA ── */}
@@ -341,7 +238,9 @@ export default function HomePage() {
                 TU TRANSMETS.<br /><span className="text-[#FF7A00]">ON TE PAIE.</span>
               </h2>
               <p className="text-[#666] text-sm sm:text-base leading-relaxed font-sans mb-8">
-                Crée une session en 5 minutes. Partage le lien sur tes réseaux. Arrive et scanne les QR codes. C&apos;est tout.
+                Crée une session en 5 minutes. Partage le lien sur tes réseaux.
+                Arrive et scanne les QR codes. C&apos;est tout.
+                Tu te concentres sur ce que tu aimes — transmettre ce qui te passionne.
               </p>
               <Link href="/sign-up" className="btn-passion flex items-center gap-2 w-fit pulse-orange">
                 DEVENIR COACH →
@@ -349,11 +248,13 @@ export default function HomePage() {
             </div>
 
             <div>
-              {/* Revenue calc */}
               <div className="bg-[#1e1e1e] border border-[#2a2a2a] p-6 mb-4">
                 <p className="text-[#555] text-xs font-sans mb-3">Sur une session à 15€ × 15 personnes =</p>
-                <p className="font-display text-5xl text-[#FF7A00] mb-4">157,50€</p>
-                <p className="font-display-md text-xs text-[#555] mb-4 tracking-widest">POUR TOI</p>
+                <p className="font-display text-5xl text-[#FF7A00] mb-1">157,50€</p>
+                <p className="font-display-md text-xs text-[#555] mb-1 tracking-widest">POUR TOI</p>
+                <p className="text-[#444] text-xs font-sans mb-4">
+                  Jusqu&apos;à <span className="text-[#FF7A00]">77%</span> si tu remplis toi-même via tes réseaux.
+                </p>
                 <div className="w-full h-8 flex overflow-hidden border border-[#2a2a2a]">
                   <div className="bg-[#FF7A00] flex items-center justify-center font-display-md text-xs text-white" style={{ width: "70%" }}>70% COACH</div>
                   <div className="bg-[#FF7A00]/30 flex items-center justify-center font-display-md text-[9px] text-white/60" style={{ width: "22%" }}>22%</div>
@@ -362,7 +263,7 @@ export default function HomePage() {
                 <div className="flex justify-between mt-2 text-[10px] text-[#444] font-sans">
                   <span>Tes revenus</span>
                   <span>Plateforme</span>
-                  <span>Frais</span>
+                  <span className="text-[#FF7A00]/60">+7% si tu remplis</span>
                 </div>
               </div>
 
@@ -384,7 +285,12 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="passion-sep mb-10" />
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-10">
-            <span className="font-display text-3xl text-white">PASSIONPLAY</span>
+            <div>
+              <span className="font-display text-3xl text-white block mb-1">PASSIONPLAY</span>
+              <span className="font-display-md text-xs text-[#FF7A00] tracking-widest">
+                VIVEZ VOTRE PASSION. TRANSMETTEZ LA VÔTRE.
+              </span>
+            </div>
             <div className="flex flex-wrap gap-6 md:gap-10">
               {[["Sessions", "/explore"], ["Devenir coach", "/sign-up"], ["Connexion", "/sign-in"], ["Contact", "/legal/contact"]].map(([label, href]) => (
                 <Link key={label} href={href} className="text-[#555] hover:text-[#FF7A00] text-sm transition-colors font-sans">{label}</Link>
