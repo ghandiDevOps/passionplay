@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { QRCodeSVG } from "qrcode.react";
+import { ConfirmationPoller } from "@/components/booking/confirmation-poller";
 import { formatSessionDateTime } from "@/lib/utils/format-date";
 import { formatPrice } from "@/lib/utils/format-price";
 import Link from "next/link";
 
 interface Props {
-  searchParams: { booking_id?: string };
+  searchParams: { booking_id?: string; redirect_status?: string };
 }
 
 export default async function ConfirmationPage({ searchParams }: Props) {
@@ -24,75 +25,88 @@ export default async function ConfirmationPage({ searchParams }: Props) {
     },
   });
 
-  if (!booking || (booking.status !== "confirmed" && booking.status !== "attended")) {
+  if (!booking) notFound();
+
+  const isPending   = booking.status === "pending";
+  const isConfirmed = booking.status === "confirmed" || booking.status === "attended";
+  const stripeOk    = searchParams.redirect_status === "succeeded";
+
+  // Booking cancelled ou invalid sans redirect Stripe valide
+  if (!isConfirmed && !(isPending && stripeOk)) {
     notFound();
   }
 
   const { session } = booking;
 
-  // Générer le lien iCal
   const icalUrl = generateIcalUrl({
-    title:   session.title,
-    start:   session.dateStart,
-    end:     new Date(session.dateStart.getTime() + session.durationMin * 60000),
+    title:    session.title,
+    start:    session.dateStart,
+    end:      new Date(session.dateStart.getTime() + session.durationMin * 60000),
     location: session.locationAddress,
   });
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#1a1a1a]">
       <div className="page-container pt-10 space-y-8">
 
         {/* Succès */}
-        <div className="text-center space-y-3 animate-fade-in">
+        <div className="text-center space-y-3">
           <div className="text-6xl">🎉</div>
-          <h1 className="text-2xl font-black text-gray-900">
+          <h1 className="font-display text-3xl text-white">
             C&apos;est réservé, {booking.participantName} !
           </h1>
-          <p className="text-gray-500">
+          <p className="text-[#888]">
             Ton QR code a été envoyé à{" "}
-            <span className="font-medium text-gray-700">{booking.participantEmail}</span>
+            <span className="text-white">{booking.participantEmail}</span>
           </p>
         </div>
 
-        {/* QR Code */}
-        <div className="flex flex-col items-center space-y-3">
-          <div className="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-sm">
-            <QRCodeSVG
-              value={booking.qrToken}
-              size={200}
-              level="H"
-              includeMargin
-            />
+        {/* QR Code — poller si encore pending, statique si confirmé */}
+        {isConfirmed ? (
+          <div className="flex flex-col items-center space-y-3">
+            <div className="bg-white rounded-xl p-5 shadow-sm">
+              <QRCodeSVG
+                value={booking.qrToken}
+                size={200}
+                level="H"
+                includeMargin
+              />
+            </div>
+            <p className="text-sm text-[#888] text-center">
+              Montre ce QR code à l&apos;entrée
+            </p>
           </div>
-          <p className="text-sm text-gray-500 text-center">
-            Montre ce QR code à l&apos;entrée de la session
-          </p>
-        </div>
+        ) : (
+          <ConfirmationPoller
+            bookingId={bookingId}
+            participantName={booking.participantName}
+          />
+        )}
 
         {/* Récapitulatif */}
-        <div className="bg-gray-50 rounded-2xl p-5 space-y-4">
-          <h2 className="font-bold text-gray-900">{session.title}</h2>
+        <div className="bg-[#1e1e1e] border border-[#2a2a2a] rounded-xl p-5 space-y-4">
+          <h2 className="font-display-md text-white">{session.title}</h2>
 
           <div className="space-y-3 text-sm">
             <div className="flex items-center gap-3">
               <span className="text-lg">📅</span>
-              <span className="text-gray-700 capitalize">
+              <span className="text-[#ccc] capitalize">
                 {formatSessionDateTime(session.dateStart, session.durationMin)}
               </span>
             </div>
             <div className="flex items-center gap-3">
               <span className="text-lg">📍</span>
-              <span className="text-gray-700">{session.locationAddress}</span>
+              <span className="text-[#ccc]">{session.locationAddress}</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="text-lg">👤</span>
-              <span className="text-gray-700">
+              <span className="text-[#ccc]">
                 Coach : {session.coach.user.name}
               </span>
             </div>
             <div className="flex items-center gap-3">
               <span className="text-lg">💶</span>
-              <span className="text-gray-700 font-semibold">
+              <span className="text-white font-semibold">
                 Payé : {booking.amountPaidCents ? formatPrice(booking.amountPaidCents) : "—"}
               </span>
             </div>
@@ -104,7 +118,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
           <a
             href={icalUrl}
             download="passionplay-session.ics"
-            className="btn-secondary text-center block"
+            className="btn-passion-outline text-center block"
           >
             📅 Ajouter au calendrier
           </a>
@@ -112,21 +126,26 @@ export default async function ConfirmationPage({ searchParams }: Props) {
             href={`https://maps.google.com/?q=${encodeURIComponent(session.locationAddress)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-secondary text-center block"
+            className="btn-passion-outline text-center block"
           >
             🗺️ Voir sur la carte
           </a>
         </div>
 
-        <p className="text-xs text-center text-gray-400 pb-8">
+        <p className="text-xs text-center text-[#555]">
           Tu recevras un rappel la veille et 2h avant la session.
         </p>
+
+        <div className="text-center pb-8">
+          <Link href="/my/bookings" className="font-display-md text-xs text-[#FF7A00] tracking-widest hover:underline">
+            VOIR TOUS MES BILLETS →
+          </Link>
+        </div>
       </div>
     </main>
   );
 }
 
-// Génère une URL de téléchargement iCal
 function generateIcalUrl({
   title,
   start,

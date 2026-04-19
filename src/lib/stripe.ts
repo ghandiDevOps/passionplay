@@ -57,14 +57,18 @@ export async function createPaymentIntent({
 }) {
   const { applicationFeeCents } = calculateAmounts(amountCents);
 
+  // En dev, les comptes seed (acct_seed_*) ne sont pas des vrais comptes Stripe Connect.
+  // On crée un PaymentIntent simple sans destination charge pour pouvoir tester le flow.
+  const isSeedAccount = coachStripeAccountId.startsWith("acct_seed_");
+
   return stripe.paymentIntents.create({
     amount: amountCents,
     currency: "eur",
     automatic_payment_methods: { enabled: true },
-    application_fee_amount: applicationFeeCents,  // 22% PP + 7% parrainage = 29%
-    transfer_data: {
-      destination: coachStripeAccountId,
-    },
+    ...(!isSeedAccount && {
+      application_fee_amount: applicationFeeCents,
+      transfer_data: { destination: coachStripeAccountId },
+    }),
     metadata,
   });
 }

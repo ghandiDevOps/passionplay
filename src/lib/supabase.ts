@@ -1,12 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 
-// Client Supabase côté serveur (service role — accès complet)
-export const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-);
-
 // Client Supabase côté client (anon key — accès limité par RLS)
+// ⚠️ Ce fichier est importé par des Client Components — ne jamais y mettre de clé secrète
 export const supabaseClient = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,

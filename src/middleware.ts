@@ -9,6 +9,10 @@ const isCoachRoute = createRouteMatcher([
   "/onboarding(.*)",
 ]);
 
+const isUserRoute = createRouteMatcher([
+  "/my/(.*)",
+]);
+
 const isPublicRoute = createRouteMatcher([
   "/",
   "/s/(.*)",
@@ -17,7 +21,6 @@ const isPublicRoute = createRouteMatcher([
   "/sign-up(.*)",
   "/explore(.*)",
   "/coaches/(.*)",
-  "/my-booking(.*)",
   "/api/webhooks/(.*)",
   "/api/cron/(.*)",
 ]);
@@ -25,7 +28,7 @@ const isPublicRoute = createRouteMatcher([
 export default clerkMiddleware(async (auth, req) => {
   if (isPublicRoute(req)) return NextResponse.next();
 
-  if (isCoachRoute(req)) {
+  if (isCoachRoute(req) || isUserRoute(req)) {
     const { userId } = await auth();
     if (!userId) {
       const signInUrl = new URL("/sign-in", req.url);

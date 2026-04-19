@@ -10,6 +10,21 @@
  *   npm run db:seed:dev:reset  → supprime toutes les données seed puis réinjecte
  */
 
+import * as fs from "fs";
+import * as path from "path";
+
+// Charge .env.local si DATABASE_URL n'est pas déjà défini (utile pour ts-node en dehors de Next.js)
+if (!process.env.DATABASE_URL) {
+  const envPath = path.resolve(__dirname, "../.env.local");
+  if (fs.existsSync(envPath)) {
+    const lines = fs.readFileSync(envPath, "utf-8").split("\n");
+    for (const line of lines) {
+      const match = line.match(/^([^#=\s]+)\s*=\s*"?([^"]*)"?\s*$/);
+      if (match) process.env[match[1]] = match[2];
+    }
+  }
+}
+
 import { PrismaClient } from "@prisma/client";
 import type {
   SessionType,
