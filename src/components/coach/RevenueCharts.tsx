@@ -96,8 +96,8 @@ const yearCompareData = [
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-[#1a1a1a] border border-orange-500 rounded-lg p-3 shadow-lg">
-        <p className="text-orange-500 font-bold text-sm mb-1">{label}</p>
+      <div className="bg-[#1a1a1a] border border-[#FF7A00] rounded-lg p-3 shadow-lg">
+        <p className="text-[#FF7A00] font-bold text-sm mb-1">{label}</p>
         {payload.map((entry: any, index: number) => (
           <p key={index} className="text-xs" style={{ color: entry.color }}>
             {entry.name}: <span className="font-bold">{entry.value}€</span>
@@ -111,8 +111,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 function ChartSkeleton({ height = 350 }: { height?: number }) {
   return (
-    <div className="bg-slate-800 border border-orange-500/20 rounded-lg p-6 animate-pulse" style={{ minHeight: height }}>
-      <div className="h-5 w-48 bg-slate-700 rounded mb-6" />
+    <div className="bg-[#2a2a2a] border border-[#FF7A00]/20 rounded-lg p-6 animate-pulse" style={{ minHeight: height }}>
+      <div className="h-5 w-48 bg-[#333] rounded mb-6" />
       <div className="flex items-end gap-2 h-[250px]">
         {Array.from({ length: 7 }).map((_, i) => (
           <div
@@ -133,10 +133,10 @@ function KPISkeleton() {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="bg-slate-800 border border-orange-500/20 rounded-lg p-4 animate-pulse">
-          <div className="h-3 w-24 bg-slate-700 rounded mb-2" />
-          <div className="h-7 w-16 bg-slate-700 rounded mb-2" />
-          <div className="h-3 w-20 bg-slate-700 rounded" />
+        <div key={i} className="bg-[#2a2a2a] border border-[#FF7A00]/20 rounded-lg p-4 animate-pulse">
+          <div className="h-3 w-24 bg-[#333] rounded mb-2" />
+          <div className="h-7 w-16 bg-[#333] rounded mb-2" />
+          <div className="h-3 w-20 bg-[#333] rounded" />
         </div>
       ))}
     </div>
@@ -304,7 +304,7 @@ export default function RevenueCharts() {
               className={`flex items-center gap-2 px-5 py-3 rounded-lg font-semibold text-sm transition-all ${
                 activePeriod === key
                   ? 'bg-orange-500 text-white'
-                  : 'bg-slate-800 border border-orange-500/20 text-gray-400 hover:border-orange-500 hover:text-white'
+                  : 'bg-[#2a2a2a] border border-[#FF7A00]/20 text-gray-400 hover:border-[#FF7A00] hover:text-white'
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -320,8 +320,8 @@ export default function RevenueCharts() {
             onClick={() => setShowFilters(!showFilters)}
             className={`flex items-center gap-2 px-4 py-3 rounded-lg font-semibold text-sm transition-all ${
               hasActiveFilter
-                ? 'bg-orange-500/20 border border-orange-500 text-orange-500'
-                : 'bg-slate-800 border border-slate-700 text-gray-400 hover:border-orange-500 hover:text-white'
+                ? 'bg-orange-500/20 border border-[#FF7A00] text-[#FF7A00]'
+                : 'bg-[#2a2a2a] border border-[#3a3a3a] text-gray-400 hover:border-[#FF7A00] hover:text-white'
             }`}
           >
             <Filter className="w-4 h-4" />
@@ -337,14 +337,14 @@ export default function RevenueCharts() {
         <div className="relative">
           <button
             onClick={() => setShowExportMenu(!showExportMenu)}
-            className="flex items-center gap-2 px-4 py-3 rounded-lg font-semibold text-sm bg-slate-800 border border-slate-700 text-gray-400 hover:border-orange-500 hover:text-white transition-all"
+            className="flex items-center gap-2 px-4 py-3 rounded-lg font-semibold text-sm bg-[#2a2a2a] border border-[#3a3a3a] text-gray-400 hover:border-[#FF7A00] hover:text-white transition-all"
           >
             <Download className="w-4 h-4" />
             EXPORTER
           </button>
 
           {showExportMenu && (
-            <div className="absolute right-0 top-full mt-2 bg-slate-800 border border-orange-500/30 rounded-lg shadow-xl z-50 overflow-hidden min-w-[200px]">
+            <div className="absolute right-0 top-full mt-2 bg-[#2a2a2a] border border-[#FF7A00]/30 rounded-lg shadow-xl z-50 overflow-hidden min-w-[200px]">
               <button
                 onClick={() => {
                   exportCSV(getExportData(), `passionplay-revenus-${activePeriod}`);
@@ -358,7 +358,7 @@ export default function RevenueCharts() {
                   <div className="text-[10px] text-gray-500">Tableur (Excel, Google Sheets)</div>
                 </div>
               </button>
-              <div className="border-t border-slate-700" />
+              <div className="border-t border-[#3a3a3a]" />
               <button
                 onClick={() => {
                   exportPDF(getExportData(), `passionplay-revenus-${activePeriod}`, `Revenus — ${periodLabels[activePeriod]}`);
@@ -379,9 +379,9 @@ export default function RevenueCharts() {
 
       {/* PANNEAU DE FILTRES */}
       {showFilters && activePeriod !== 'année' && (
-        <div className="bg-slate-800 border border-orange-500/20 rounded-lg p-4 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="bg-[#2a2a2a] border border-[#FF7A00]/20 rounded-lg p-4 animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="flex items-center justify-between mb-3">
-            <span className="font-semibold text-sm text-orange-500">FILTRER LES DONNÉES</span>
+            <span className="font-semibold text-sm text-[#FF7A00]">FILTRER LES DONNÉES</span>
             {hasActiveFilter && (
               <button
                 onClick={() => { setSportFilter('Tous'); setTypeFilter('Tous'); setCoachFilter('Tous'); }}
@@ -403,7 +403,7 @@ export default function RevenueCharts() {
                     className={`px-3 py-1.5 rounded text-xs font-semibold transition-all ${
                       sportFilter === sport
                         ? 'bg-orange-500 text-white'
-                        : 'bg-slate-900 border border-slate-700 text-gray-400 hover:border-orange-500 hover:text-white'
+                        : 'bg-[#1a1a1a] border border-[#3a3a3a] text-gray-400 hover:border-[#FF7A00] hover:text-white'
                     }`}
                   >
                     {sport.toUpperCase()}
@@ -421,7 +421,7 @@ export default function RevenueCharts() {
                     className={`px-3 py-1.5 rounded text-xs font-semibold transition-all ${
                       typeFilter === type
                         ? 'bg-orange-500 text-white'
-                        : 'bg-slate-900 border border-slate-700 text-gray-400 hover:border-orange-500 hover:text-white'
+                        : 'bg-[#1a1a1a] border border-[#3a3a3a] text-gray-400 hover:border-[#FF7A00] hover:text-white'
                     }`}
                   >
                     {type.toUpperCase()}
@@ -439,7 +439,7 @@ export default function RevenueCharts() {
                     className={`px-3 py-1.5 rounded text-xs font-semibold transition-all ${
                       coachFilter === coach
                         ? 'bg-orange-500 text-white'
-                        : 'bg-slate-900 border border-slate-700 text-gray-400 hover:border-orange-500 hover:text-white'
+                        : 'bg-[#1a1a1a] border border-[#3a3a3a] text-gray-400 hover:border-[#FF7A00] hover:text-white'
                     }`}
                   >
                     {coach.toUpperCase()}
@@ -464,7 +464,7 @@ export default function RevenueCharts() {
           )}
 
           {isLoading ? <ChartSkeleton height={400} /> : (
-            <div className="bg-slate-800 border border-orange-500/20 rounded-lg p-6 animate-in fade-in duration-500">
+            <div className="bg-[#2a2a2a] border border-[#FF7A00]/20 rounded-lg p-6 animate-in fade-in duration-500">
               <h3 className="font-semibold text-xl mb-4">REVENUS PAR JOUR</h3>
               <ResponsiveContainer width="100%" height={350}>
                 <ComposedChart data={weekData} barGap={8}>
@@ -495,7 +495,7 @@ export default function RevenueCharts() {
           )}
 
           {isLoading ? <ChartSkeleton /> : (
-            <div className="bg-slate-800 border border-orange-500/20 rounded-lg p-6 animate-in fade-in duration-500">
+            <div className="bg-[#2a2a2a] border border-[#FF7A00]/20 rounded-lg p-6 animate-in fade-in duration-500">
               <h3 className="font-semibold text-xl mb-4">REVENUS JOURNALIERS — AVRIL 2025</h3>
               <ResponsiveContainer width="100%" height={350}>
                 <BarChart data={monthDailyData}>
@@ -524,7 +524,7 @@ export default function RevenueCharts() {
           )}
 
           {isLoading ? <ChartSkeleton /> : (
-            <div className="bg-slate-800 border border-orange-500/20 rounded-lg p-6 animate-in fade-in duration-500">
+            <div className="bg-[#2a2a2a] border border-[#FF7A00]/20 rounded-lg p-6 animate-in fade-in duration-500">
               <h3 className="font-semibold text-xl mb-4">REVENUS MENSUELS — 2025</h3>
               <ResponsiveContainer width="100%" height={350}>
                 <ComposedChart data={yearData}>
@@ -541,7 +541,7 @@ export default function RevenueCharts() {
           )}
 
           {isLoading ? <ChartSkeleton height={350} /> : (
-            <div className="bg-slate-800 border border-orange-500/20 rounded-lg p-6 animate-in fade-in duration-500" style={{ animationDelay: '100ms' }}>
+            <div className="bg-[#2a2a2a] border border-[#FF7A00]/20 rounded-lg p-6 animate-in fade-in duration-500" style={{ animationDelay: '100ms' }}>
               <h3 className="font-semibold text-xl mb-4">COMPARAISON 2024 VS 2025</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={yearCompareData}>
@@ -564,7 +564,7 @@ export default function RevenueCharts() {
 
 function KPICard({ label, value, trend, positive }: { label: string; value: string; trend: string; positive?: boolean }) {
   return (
-    <div className="bg-slate-800 border border-orange-500/20 rounded-lg p-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <div className="bg-[#2a2a2a] border border-[#FF7A00]/20 rounded-lg p-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="text-gray-400 text-xs font-semibold mb-1">{label}</div>
       <div className="text-2xl font-bold text-white">{value}</div>
       <div className={`flex items-center gap-1 text-xs mt-1 ${positive ? 'text-green-400' : 'text-gray-500'}`}>
