@@ -38,7 +38,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#1a1a1a]">
       <div className="page-container pt-10">
 
         {/* Progress bar */}
@@ -46,8 +46,8 @@ export default function OnboardingPage() {
           {[1, 2, 3].map((s) => (
             <div
               key={s}
-              className={`h-1.5 flex-1 rounded-full transition-colors ${
-                s <= step ? "bg-passion-500" : "bg-gray-100"
+              className={`h-0.5 flex-1 transition-colors ${
+                s <= step ? "bg-[#FF7A00]" : "bg-[#2a2a2a]"
               }`}
             />
           ))}
@@ -55,12 +55,16 @@ export default function OnboardingPage() {
 
         {/* Étape 1 : Domaines */}
         {step === 1 && (
-          <div className="space-y-6 animate-fade-in">
+          <div className="space-y-6 animate-fade-up">
             <div>
-              <h1 className="text-2xl font-black text-gray-900">
-                Quelle est ta passion ?
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-1 h-5 bg-[#FF7A00]" />
+                <span className="font-display-md text-xs text-[#FF7A00] tracking-[0.2em]">ÉTAPE 1 / 3</span>
+              </div>
+              <h1 className="font-display text-4xl text-white">
+                QUELLE EST TA PASSION ?
               </h1>
-              <p className="text-gray-500 mt-1">
+              <p className="text-[#555] mt-2 text-sm">
                 Sélectionne un ou plusieurs domaines que tu maîtrises.
               </p>
             </div>
@@ -70,14 +74,14 @@ export default function OnboardingPage() {
                 <button
                   key={value}
                   onClick={() => toggleDomain(value)}
-                  className={`p-4 rounded-2xl border-2 text-left transition-all ${
+                  className={`p-4 border text-left transition-all ${
                     selectedDomains.includes(value)
-                      ? "border-passion-500 bg-passion-50"
-                      : "border-gray-100 bg-white"
+                      ? "border-[#FF7A00] bg-[#FF7A00]/10"
+                      : "border-[#2a2a2a] bg-[#1e1e1e] hover:border-[#FF7A00]/40"
                   }`}
                 >
                   <span className="text-2xl">{emoji}</span>
-                  <p className="font-semibold text-gray-900 mt-1">{label}</p>
+                  <p className="font-display text-sm text-white mt-1">{label.toUpperCase()}</p>
                 </button>
               ))}
             </div>
@@ -94,12 +98,16 @@ export default function OnboardingPage() {
 
         {/* Étape 2 : Bio */}
         {step === 2 && (
-          <div className="space-y-6 animate-fade-in">
+          <div className="space-y-6 animate-fade-up">
             <div>
-              <h1 className="text-2xl font-black text-gray-900">
-                Présente-toi en 1 phrase
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-1 h-5 bg-[#FF7A00]" />
+                <span className="font-display-md text-xs text-[#FF7A00] tracking-[0.2em]">ÉTAPE 2 / 3</span>
+              </div>
+              <h1 className="font-display text-4xl text-white">
+                PRÉSENTE-TOI EN 1 PHRASE
               </h1>
-              <p className="text-gray-500 mt-1">
+              <p className="text-[#555] mt-2 text-sm">
                 Qu&apos;est-ce qui te rend unique dans ta pratique ?
               </p>
             </div>
@@ -111,11 +119,11 @@ export default function OnboardingPage() {
                 placeholder="Ex : Passionné de MMA depuis 12 ans, j'ai appris à tomber avant d'apprendre à frapper."
                 maxLength={140}
                 rows={3}
-                className="w-full px-4 py-3.5 rounded-2xl border border-gray-200 text-gray-900
-                           placeholder:text-gray-400 focus:outline-none focus:ring-2
-                           focus:ring-passion-500 resize-none text-base"
+                className="w-full px-4 py-3.5 bg-[#1e1e1e] border border-[#2a2a2a] text-white
+                           placeholder:text-[#444] focus:outline-none focus:border-[#FF7A00]
+                           resize-none text-base transition-colors"
               />
-              <p className="text-xs text-right text-gray-400">{bio.length}/140</p>
+              <p className="text-xs text-right text-[#555]">{bio.length}/140</p>
             </div>
 
             <div className="flex gap-3">
@@ -131,36 +139,32 @@ export default function OnboardingPage() {
 
         {/* Étape 3 : Stripe Connect */}
         {step === 3 && (
-          <div className="space-y-6 animate-fade-in">
+          <div className="space-y-6 animate-fade-up">
             <div>
-              <h1 className="text-2xl font-black text-gray-900">
-                Reçois tes paiements 💸
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-1 h-5 bg-[#FF7A00]" />
+                <span className="font-display-md text-xs text-[#FF7A00] tracking-[0.2em]">ÉTAPE 3 / 3</span>
+              </div>
+              <h1 className="font-display text-4xl text-white">
+                REÇOIS TES PAIEMENTS
               </h1>
-              <p className="text-gray-600 mt-2 leading-relaxed">
+              <p className="text-[#555] mt-2 text-sm leading-relaxed">
                 PassionPlay utilise Stripe pour virer tes revenus directement sur ton
                 compte bancaire. L&apos;inscription prend 3 minutes.
               </p>
             </div>
 
-            <div className="bg-gray-50 rounded-2xl p-4 space-y-3">
-              <div className="flex items-start gap-3">
-                <span className="text-xl">🔒</span>
-                <p className="text-sm text-gray-600">
-                  Stripe est le leader mondial des paiements — 100% sécurisé.
-                </p>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="text-xl">💳</span>
-                <p className="text-sm text-gray-600">
-                  Tu auras besoin de ton IBAN et d&apos;une pièce d&apos;identité.
-                </p>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="text-xl">📅</span>
-                <p className="text-sm text-gray-600">
-                  Versements chaque lundi pour les sessions de la semaine précédente.
-                </p>
-              </div>
+            <div className="bg-[#1e1e1e] border border-[#2a2a2a] p-4 space-y-4">
+              {[
+                { icon: "🔒", text: "Stripe est le leader mondial des paiements — 100% sécurisé." },
+                { icon: "💳", text: "Tu auras besoin de ton IBAN et d'une pièce d'identité." },
+                { icon: "📅", text: "Versements chaque lundi pour les sessions de la semaine précédente." },
+              ].map(({ icon, text }) => (
+                <div key={icon} className="flex items-start gap-3">
+                  <span className="text-xl">{icon}</span>
+                  <p className="text-sm text-[#888]">{text}</p>
+                </div>
+              ))}
             </div>
 
             <div className="flex gap-3">
@@ -174,7 +178,7 @@ export default function OnboardingPage() {
 
             <button
               onClick={() => router.push("/dashboard")}
-              className="w-full text-sm text-gray-400 text-center"
+              className="w-full text-sm text-[#555] text-center hover:text-[#888] transition-colors"
             >
               Passer pour l&apos;instant (tu pourras le faire plus tard)
             </button>

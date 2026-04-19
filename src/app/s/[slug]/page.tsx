@@ -165,12 +165,9 @@ export default async function SessionPage({ params }: Props) {
           </div>
 
           {isFull ? (
-            <Link
-              href={`/s/${session.slug}/waitlist`}
-              className="flex-1 btn-passion-outline text-center"
-            >
-              LISTE D&apos;ATTENTE
-            </Link>
+            <span className="flex-1 text-center py-3 px-6 border border-[#FF7A00]/30 text-[#555] font-display text-sm tracking-widest cursor-not-allowed">
+              SESSION COMPLÈTE
+            </span>
           ) : (
             <Link
               href={`/book/${session.id}`}

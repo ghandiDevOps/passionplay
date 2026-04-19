@@ -48,7 +48,6 @@ export default function BookingPage({ params }: Props) {
         return;
       }
 
-      // Redirection vers la page paiement avec le client_secret
       router.push(
         `/book/${params.sessionId}/payment?client_secret=${json.clientSecret}&booking_id=${json.bookingId}&amount=${json.amountCents}`,
       );
@@ -60,14 +59,19 @@ export default function BookingPage({ params }: Props) {
   };
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#1a1a1a]">
       <div className="page-container pt-10">
         <div className="space-y-8">
+
           <div className="space-y-2">
-            <h1 className="text-2xl font-black text-gray-900">
-              Tu es à 30 secondes 🎯
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-1 h-5 bg-[#FF7A00]" />
+              <span className="font-display-md text-xs text-[#FF7A00] tracking-[0.2em]">RÉSERVATION</span>
+            </div>
+            <h1 className="font-display text-4xl text-white">
+              T&apos;ES À 30 SECONDES
             </h1>
-            <p className="text-gray-500">
+            <p className="text-[#555] text-sm">
               Juste ton prénom et ton email pour réserver ta place.
             </p>
           </div>
@@ -92,8 +96,8 @@ export default function BookingPage({ params }: Props) {
             />
 
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-2xl p-4">
-                <p className="text-sm text-red-700">{error}</p>
+              <div className="bg-[#FF3D00]/10 border border-[#FF3D00]/30 p-4">
+                <p className="text-sm text-[#FF3D00]">{error}</p>
               </div>
             )}
 
@@ -109,12 +113,11 @@ export default function BookingPage({ params }: Props) {
             </div>
           </form>
 
-          {/* FIX #17 — Liens légaux corrigés (/cgu → /legal/cgu, /confidentialite → /legal/privacy) */}
-          <p className="text-xs text-center text-gray-400">
+          <p className="text-xs text-center text-[#555]">
             En continuant, tu acceptes les{" "}
-            <a href="/legal/cgu" className="underline">CGU</a>{" "}
+            <a href="/legal/cgu" className="underline hover:text-[#FF7A00] transition-colors">CGU</a>{" "}
             et la{" "}
-            <a href="/legal/privacy" className="underline">
+            <a href="/legal/privacy" className="underline hover:text-[#FF7A00] transition-colors">
               politique de confidentialité
             </a>
             .

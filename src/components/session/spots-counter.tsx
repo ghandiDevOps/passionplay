@@ -33,7 +33,7 @@ export function SpotsCounter({
 
   if (isFull) {
     return (
-      <span className="inline-flex items-center gap-1.5 text-red-600 font-semibold text-sm">
+      <span className="inline-flex items-center gap-1.5 text-[#FF3D00] font-semibold text-sm">
         🔴 Session complète
       </span>
     );
@@ -43,7 +43,7 @@ export function SpotsCounter({
     <span
       className={cn(
         "inline-flex items-center gap-1.5 font-semibold text-sm",
-        isAlmostFull ? "text-orange-600" : "text-gray-600",
+        isAlmostFull ? "text-[#FF7A00]" : "text-[#888]",
       )}
     >
       {isAlmostFull ? "🔥" : "👥"}

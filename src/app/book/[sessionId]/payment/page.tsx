@@ -30,7 +30,7 @@ export default function PaymentPage({ params }: Props) {
 
   if (!ready || !clientSecret || !bookingId) {
     return (
-      <main className="min-h-screen bg-white flex items-center justify-center">
+      <main className="min-h-screen bg-[#1a1a1a] flex items-center justify-center">
         <Spinner />
       </main>
     );
@@ -39,14 +39,18 @@ export default function PaymentPage({ params }: Props) {
   const amountLabel = amountCents ? formatPrice(parseInt(amountCents)) : "";
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#1a1a1a]">
       <div className="page-container pt-10 space-y-8">
 
         <div className="space-y-2">
-          <h1 className="text-2xl font-black text-gray-900">
-            Dernière étape 🔥
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-1 h-5 bg-[#FF7A00]" />
+            <span className="font-display-md text-xs text-[#FF7A00] tracking-[0.2em]">PAIEMENT SÉCURISÉ</span>
+          </div>
+          <h1 className="font-display text-4xl text-white">
+            DERNIÈRE ÉTAPE
           </h1>
-          <p className="text-gray-500">
+          <p className="text-[#555] text-sm">
             Règle ta place et ton QR code t&apos;est envoyé immédiatement.
           </p>
         </div>
@@ -56,15 +60,34 @@ export default function PaymentPage({ params }: Props) {
           options={{
             clientSecret,
             appearance: {
-              theme: "flat",
+              theme: "night",
               variables: {
                 colorPrimary:        "#FF7A00",
-                colorBackground:     "#ffffff",
-                colorText:           "#111827",
-                colorDanger:         "#ef4444",
+                colorBackground:     "#1e1e1e",
+                colorText:           "#ffffff",
+                colorTextSecondary:  "#888888",
+                colorDanger:         "#FF3D00",
+                colorIcon:           "#FF7A00",
                 fontFamily:          "system-ui, sans-serif",
-                borderRadius:        "12px",
+                borderRadius:        "0px",
                 spacingUnit:         "4px",
+              },
+              rules: {
+                ".Input": {
+                  border:      "1px solid #2a2a2a",
+                  backgroundColor: "#1a1a1a",
+                },
+                ".Input:focus": {
+                  border:     "1px solid #FF7A00",
+                  boxShadow:  "none",
+                },
+                ".Label": {
+                  color:      "#888",
+                  fontSize:   "12px",
+                  fontWeight: "600",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                },
               },
             },
             locale: "fr",
