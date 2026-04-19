@@ -195,7 +195,7 @@ export default function ExplorePage() {
             const pct = Math.round((s.totalSpots - s.remainingSpots) / s.totalSpots * 100);
             const urgent = s.remainingSpots <= 3;
             return (
-              <div key={s.id} className="session-card bg-[#1e1e1e] border border-[#2a2a2a] overflow-hidden group cursor-pointer">
+              <Link key={s.id} href={`/s/${s.id}`} className="session-card bg-[#1e1e1e] border border-[#2a2a2a] overflow-hidden group block">
                 {/* Image */}
                 <div className="relative h-44 bg-[#2a2a2a] overflow-hidden">
                   {s.img && (
@@ -244,12 +244,12 @@ export default function ExplorePage() {
                       <span className="font-display text-3xl text-[#FF7A00]">{s.price}€</span>
                       <span className="font-display-md text-xs text-[#444] ml-1">/ pers.</span>
                     </div>
-                    <button className="btn-passion text-xs px-4 py-2 min-h-0">
+                    <span className="btn-passion text-xs px-4 py-2 min-h-0">
                       RÉSERVER →
-                    </button>
+                    </span>
                   </div>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>
