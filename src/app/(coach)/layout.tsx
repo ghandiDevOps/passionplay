@@ -1,6 +1,7 @@
 ﻿import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { LogoWordmark } from "@/components/ui/logo-wordmark";
 import { UserButton } from "@clerk/nextjs";
 
 export default async function CoachLayout({
@@ -18,13 +19,7 @@ export default async function CoachLayout({
       <header className="hidden sm:block sticky top-0 z-40 bg-[#111]/95 backdrop-blur-sm border-b border-[#2a2a2a]">
         <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/PassionPlay_logoavectext_svg.svg"
-              alt="PassionPlay"
-              className="h-7 w-auto"
-              style={{ filter: "brightness(0) invert(1)" }}
-            />
+            <LogoWordmark className="h-7 w-auto" style={{ filter: "brightness(0) invert(1)" }} />
           </Link>
           <nav className="flex items-center gap-6">
             <Link href="/dashboard"    className="font-display-md text-xs text-[#555] hover:text-white transition-colors">DASHBOARD</Link>
@@ -40,13 +35,7 @@ export default async function CoachLayout({
       <header className="sm:hidden sticky top-0 z-40 bg-[#111]/95 backdrop-blur-sm border-b border-[#2a2a2a]">
         <div className="px-4 h-12 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/PassionPlay_logoavectext_svg.svg"
-              alt="PassionPlay"
-              className="h-6 w-auto"
-              style={{ filter: "brightness(0) invert(1)" }}
-            />
+            <LogoWordmark className="h-6 w-auto" style={{ filter: "brightness(0) invert(1)" }} />
           </Link>
           <div className="flex items-center gap-3">
             <Link href="/sessions/new" className="btn-passion text-xs px-3 py-1.5 min-h-0">+ CRÉER</Link>

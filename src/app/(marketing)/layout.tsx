@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LogoWordmark } from "@/components/ui/logo-wordmark";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/lib/db";
 
@@ -26,13 +27,7 @@ export default async function MarketingLayout({ children }: { children: React.Re
 
           {/* Logo */}
           <Link href="/" className="shrink-0 flex items-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/PassionPlay_logoavectext_svg.svg"
-              alt="PassionPlay"
-              className="h-8 w-auto"
-              style={{ filter: "brightness(0) invert(1)" }}
-            />
+            <LogoWordmark className="h-8 w-auto" style={{ filter: "brightness(0) invert(1)" }} />
           </Link>
 
           {/* Desktop */}

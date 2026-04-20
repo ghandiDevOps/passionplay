@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { LogoWordmark } from "@/components/ui/logo-wordmark";
 import { UserButton } from "@clerk/nextjs";
 
 export default async function PassionneLayout({ children }: { children: React.ReactNode }) {
@@ -14,13 +15,7 @@ export default async function PassionneLayout({ children }: { children: React.Re
       <header className="sticky top-0 z-40 bg-[#1a1a1a]/95 backdrop-blur-sm border-b border-[#2a2a2a]">
         <div className="max-w-lg mx-auto px-4 h-12 flex items-center justify-between">
           <Link href="/" className="flex items-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/PassionPlay_logoavectext_svg.svg"
-              alt="PassionPlay"
-              className="h-7 w-auto"
-              style={{ filter: "brightness(0) invert(1)" }}
-            />
+            <LogoWordmark className="h-7 w-auto" style={{ filter: "brightness(0) invert(1)" }} />
           </Link>
           <div className="flex items-center gap-4">
             <Link href="/explore" className="font-display-md text-xs text-[#888] hover:text-white transition-colors hidden sm:block">
