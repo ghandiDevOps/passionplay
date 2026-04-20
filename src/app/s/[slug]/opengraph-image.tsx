@@ -1,4 +1,4 @@
-import { ImageResponse } from "next/og";
+﻿import { ImageResponse } from "next/og";
 import { db } from "@/lib/db";
 import { formatPrice } from "@/lib/utils/format-price";
 

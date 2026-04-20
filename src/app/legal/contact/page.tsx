@@ -1,73 +1,78 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 export const metadata = { title: "Contact · PassionPlay" };
 
-const FLAME = "linear-gradient(90deg, #FFB700 0%, #FF3D00 100%)";
-
 export default function ContactPage() {
   return (
-    <main style={{ maxWidth: 560, margin: "0 auto", padding: "60px 24px 80px", fontFamily: "system-ui, sans-serif", color: "#111" }}>
-      <Link href="/" style={{ fontSize: 13, color: "#888", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 36 }}>
-        ← Retour à l&apos;accueil
-      </Link>
+    <main className="min-h-screen bg-[#1a1a1a]">
+      <div className="max-w-xl mx-auto px-4 py-14">
 
-      <h1 style={{ fontWeight: 900, fontSize: 32, letterSpacing: "-0.03em", marginBottom: 6 }}>Contact</h1>
-      <p style={{ color: "#888", fontSize: 14, marginBottom: 40 }}>Une question ? Un problème ? On répond sous 24h.</p>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 40 }}>
-        <ContactCard
-          icon="📧"
-          title="Email général"
-          value="hello@passionplay.fr"
-          href="mailto:hello@passionplay.fr"
-        />
-        <ContactCard
-          icon="🔒"
-          title="Données personnelles (RGPD)"
-          value="privacy@passionplay.fr"
-          href="mailto:privacy@passionplay.fr"
-        />
-        <ContactCard
-          icon="🤝"
-          title="Partenariats & presse"
-          value="partenaires@passionplay.fr"
-          href="mailto:partenaires@passionplay.fr"
-        />
-      </div>
-
-      <div style={{ background: "#F5F4F2", borderRadius: 14, padding: "24px", border: "1px solid #EBEBEB" }}>
-        <p style={{ fontWeight: 700, fontSize: 14, color: "#111", marginBottom: 6 }}>Tu es coach ?</p>
-        <p style={{ fontSize: 13, color: "#666", lineHeight: 1.6, marginBottom: 16 }}>
-          Crée ton compte directement et commence à proposer des sessions en 5 minutes. Aucun justificatif requis pour démarrer.
-        </p>
-        <Link href="/sign-up" style={{
-          display: "inline-block", fontWeight: 800, fontSize: 14,
-          background: FLAME, color: "#fff", padding: "12px 20px",
-          borderRadius: 10, textDecoration: "none",
-        }}>
-          Créer mon compte coach →
+        <Link href="/" className="font-display-md text-xs text-[#555] hover:text-[#FF7A00] transition-colors tracking-widest mb-10 inline-block">
+          ← ACCUEIL
         </Link>
-      </div>
 
-      <p style={{ marginTop: 36, fontSize: 12, color: "#AAA", textAlign: "center" }}>
-        PassionPlay · Paris, France · © 2026
-      </p>
+        <div className="mb-10">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-5 bg-[#FF7A00]" />
+            <span className="font-display-md text-xs text-[#FF7A00] tracking-[0.2em]">SUPPORT</span>
+          </div>
+          <h1 className="font-display text-5xl text-white mb-2">CONTACT</h1>
+          <p className="text-[#555] text-sm">Une question ? Un problème ? On répond sous 24h.</p>
+        </div>
+
+        <div className="flex flex-col gap-3 mb-10">
+          <ContactCard
+            icon="📧"
+            title="EMAIL GÉNÉRAL"
+            value="hello@passionplay.fr"
+            href="mailto:hello@passionplay.fr"
+          />
+          <ContactCard
+            icon="🔒"
+            title="DONNÉES PERSONNELLES (RGPD)"
+            value="privacy@passionplay.fr"
+            href="mailto:privacy@passionplay.fr"
+          />
+          <ContactCard
+            icon="🤝"
+            title="PARTENARIATS & PRESSE"
+            value="partenaires@passionplay.fr"
+            href="mailto:partenaires@passionplay.fr"
+          />
+        </div>
+
+        <div className="bg-[#1e1e1e] border border-[#FF7A00]/20 p-6">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-4 bg-[#FF7A00]" />
+            <span className="font-display-md text-xs text-[#FF7A00] tracking-[0.2em]">TU ES COACH ?</span>
+          </div>
+          <p className="font-display text-xl text-white mb-1">SOIS PARMI LES PREMIERS.</p>
+          <p className="text-[#555] text-sm mb-5 leading-relaxed">
+            Crée ton compte et commence à proposer des sessions en 5 minutes. Aucun justificatif requis.
+          </p>
+          <Link href="/sign-up" className="btn-passion inline-block px-6 text-sm">
+            CRÉER MON COMPTE COACH →
+          </Link>
+        </div>
+
+        <p className="mt-10 text-xs text-[#333] text-center">
+          PassionPlay · Paris, France · © 2026
+        </p>
+      </div>
     </main>
   );
 }
 
 function ContactCard({ icon, title, value, href }: { icon: string; title: string; value: string; href: string }) {
   return (
-    <a href={href} style={{
-      display: "flex", alignItems: "center", gap: 14,
-      background: "#FFFFFF", borderRadius: 12, padding: "16px 18px",
-      border: "1px solid #EBEBEB", textDecoration: "none",
-      boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
-    }}>
-      <span style={{ fontSize: 22 }}>{icon}</span>
+    <a
+      href={href}
+      className="flex items-center gap-4 bg-[#1e1e1e] border border-[#2a2a2a] p-4 hover:border-[#FF7A00]/40 transition-colors group"
+    >
+      <span className="text-2xl shrink-0">{icon}</span>
       <div>
-        <p style={{ fontSize: 11, fontWeight: 700, color: "#888", margin: "0 0 2px", letterSpacing: "0.04em", textTransform: "uppercase" }}>{title}</p>
-        <p style={{ fontSize: 14, fontWeight: 600, color: "#FF5500", margin: 0 }}>{value}</p>
+        <p className="font-display-md text-[10px] text-[#555] tracking-[0.15em] mb-0.5">{title}</p>
+        <p className="font-display-md text-sm text-[#FF7A00] group-hover:text-[#FFB700] transition-colors">{value}</p>
       </div>
     </a>
   );

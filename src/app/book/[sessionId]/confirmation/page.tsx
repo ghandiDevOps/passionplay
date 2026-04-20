@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+﻿import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { QRCodeSVG } from "qrcode.react";
 import { ConfirmationPoller } from "@/components/booking/confirmation-poller";

@@ -1,4 +1,4 @@
-export default function SessionLoading() {
+﻿export default function SessionLoading() {
   return (
     <main className="min-h-screen bg-[#1a1a1a] animate-pulse">
       {/* Hero skeleton */}

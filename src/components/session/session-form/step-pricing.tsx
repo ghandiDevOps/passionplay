@@ -1,4 +1,4 @@
-import { calculateAmounts } from "@/lib/stripe";
+﻿import { calculateAmounts } from "@/lib/stripe";
 import { MIN_PRICE_CENTS, MAX_PRICE_CENTS, MIN_SPOTS, MAX_SPOTS } from "@/constants";
 import type { SessionFormData } from "./types";
 

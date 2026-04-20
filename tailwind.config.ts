@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss";
+﻿import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
@@ -17,9 +17,9 @@ const config: Config = {
           200: "#ffe066",
           300: "#ffcc00",
           400: "#ffb700",  // Jaune flamme
-          500: "#ff7a00",  // Orange flamme — couleur primaire
+          500: "#FF7A00",  // Orange flamme — couleur primaire
           600: "#ff5500",
-          700: "#ff3d00",  // Orange profond
+          700: "#FF3D00",  // Orange profond
           800: "#cc2200",
           900: "#991a00",
           950: "#4d0d00",

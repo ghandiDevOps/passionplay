@@ -1,4 +1,4 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -134,7 +134,7 @@
     font-weight: 900;
     font-size: clamp(8rem, 30vw, 18rem);
     line-height: 1;
-    color: rgba(255, 122, 0, 0.04);
+    color: rgba(232, 149, 63, 0.04);
     pointer-events: none;
     user-select: none;
     position: absolute;
@@ -148,7 +148,7 @@
 
   .session-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 12px 40px rgba(255, 122, 0, 0.2);
+    box-shadow: 0 12px 40px rgba(232, 149, 63, 0.2);
   }
 
   /* ── Badge sport ─────────────────────────────────────────────── */
@@ -159,7 +159,7 @@
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: #fff;
-    background-color: rgba(255, 122, 0, 0.9);
+    background-color: rgba(232, 149, 63, 0.9);
     border-radius: 2px;
     padding: 0.2rem 0.6rem;
   }
@@ -212,7 +212,7 @@
     color: #FF7A00;
   }
 
-  .btn-secondary:hover { background-color: rgba(255,122,0,0.08); }
+  .btn-secondary:hover { background-color: rgba(232,149,63,0.08); }
 
   .section-label {
     @apply text-xs font-semibold uppercase tracking-[0.16em];
@@ -242,8 +242,8 @@
 }
 
 @keyframes passion-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 122, 0, 0.4); }
-  50%       { box-shadow: 0 0 0 12px rgba(255, 122, 0, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 149, 63, 0.4); }
+  50%       { box-shadow: 0 0 0 12px rgba(232, 149, 63, 0); }
 }
 
 @keyframes fade-up {

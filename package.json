@@ -14,7 +14,10 @@
     "db:seed": "npx ts-node --project tsconfig.seed.json prisma/seed.ts",
     "db:seed:dev": "npx ts-node --project tsconfig.seed.json prisma/seed-dev.ts",
     "db:seed:dev:reset": "npx ts-node --project tsconfig.seed.json prisma/seed-dev.ts --reset",
-    "db:generate": "prisma generate"
+    "db:generate": "prisma generate",
+    "screenshot": "node scripts/screenshot.mjs",
+    "screenshot:full": "node scripts/screenshot.mjs --full",
+    "design:check": "node scripts/screenshot.mjs && echo '\\n→ Envoie les images screenshots/ à Claude pour review'"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.1.0",
@@ -51,6 +54,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "playwright": "^1.59.1",
     "postcss": "^8",
     "prisma": "^5.13.0",
     "tailwindcss": "^3.4.1",

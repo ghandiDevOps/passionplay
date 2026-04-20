@@ -40,16 +40,50 @@ QR           qrcode.react (génération) + jsQR (scan)
 
 ---
 
-## Palette couleurs (Tailwind)
+## Design System
+
+> ⚠️ Avant toute intervention UI : lire `DESIGN_SYSTEM.md`
 
 ```
-passion-400 / flame-yellow  #FFB700  ← accent principal
-passion-500 / flame-orange  #FF7A00  ← couleur primaire
-passion-700 / flame-deep    #FF3D00  ← profondeur / hover
-discovery                   #22c55e  ← badge Découverte
-progression                 #3b82f6  ← badge Progression
-fond                        #080808
+Fond principal    : #1a1a1a   (dark, pas tout noir)
+Fond carte        : #1e1e1e
+Bordure           : #2a2a2a
+
+Flamme jaune      : #FFB700
+Flamme orange     : #E8953F   ← couleur marque principale (orange flyer basket)
+Flamme rouge      : #D86529   ← orange profond (hover, urgence)
+
+Gradient flamme   : linear-gradient(90deg, #FFB700 0%, #D86529 100%)
+
+Découverte badge  : #10b981  (vert)
+Progression badge : #3b82f6  (bleu)
 ```
+
+Polices : `font-display` (Impact/Arial Black, MAJUSCULES) + `font-sans` (Geist)
+Boutons : angulaires (pas arrondis), gradient flamme, glow orange sur hover
+
+### Compétences design disponibles
+
+Pour voir le site visuellement et donner du feedback :
+```bash
+# 1. Lance le dev server
+npm run dev
+
+# 2. Dans un autre terminal, prends des screenshots
+npm run screenshot          # toutes les pages en mobile
+npm run screenshot -- /     # une page spécifique
+npm run screenshot:full     # full-page
+
+# 3. Envoie les images screenshots/*.png à Claude
+#    → Claude analyse et propose des améliorations précises
+```
+
+Claude peut :
+- Analyser les screenshots pixel par pixel
+- Comparer avant/après
+- Vérifier la cohérence avec le Design System
+- Suggérer des animations, micro-interactions, spacing
+- Générer le code CSS/Tailwind des corrections
 
 ---
 

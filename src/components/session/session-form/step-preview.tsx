@@ -1,4 +1,4 @@
-import { DOMAIN_LABELS } from "@/constants";
+﻿import { DOMAIN_LABELS } from "@/constants";
 import type { SessionFormData } from "./types";
 
 interface Props {
