@@ -1,4 +1,4 @@
-import { SignIn } from "@clerk/nextjs";
+﻿import { SignIn } from "@clerk/nextjs";
 import Link from "next/link";
 
 export default function SignInPage() {
@@ -15,7 +15,7 @@ export default function SignInPage() {
           path="/sign-in"
           routing="path"
           signUpUrl="/sign-up"
-          forceRedirectUrl="/dashboard"
+          forceRedirectUrl="/api/auth/redirect"
           appearance={{
             variables: {
               colorBackground:    "#1e1e1e",

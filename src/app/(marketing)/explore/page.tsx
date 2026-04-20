@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { db } from "@/lib/db";
 import { formatDateShort, formatTime } from "@/lib/utils/format-date";
 import { ExploreClient } from "@/components/marketing/explore-client";
@@ -51,24 +51,6 @@ export default async function ExplorePage() {
 
   return (
     <div className="min-h-screen bg-[#1a1a1a] text-white">
-
-      {/* ── NAV ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#1a1a1a]/95 backdrop-blur-sm border-b border-[#2a2a2a]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
-          <Link href="/" className="font-display text-2xl text-white hover:text-[#FF7A00] transition-colors shrink-0">
-            PASSIONPLAY
-          </Link>
-          <div className="hidden md:flex items-center gap-6">
-            <Link href="/explore" className="font-display-md text-sm text-[#FF7A00]">SESSIONS</Link>
-            <Link href="/sign-in" className="font-display-md text-sm text-[#888] hover:text-white transition-colors">CONNEXION</Link>
-            <Link href="/sign-up" className="btn-passion text-sm px-5 py-2.5 min-h-0">DEVENIR COACH</Link>
-          </div>
-          <div className="flex md:hidden items-center gap-3">
-            <Link href="/sign-in" className="font-display-md text-xs text-[#888]">CONNEXION</Link>
-            <Link href="/sign-up" className="btn-passion text-xs px-3 py-2 min-h-0">COACH</Link>
-          </div>
-        </div>
-      </nav>
 
       {/* ── HEADER ── */}
       <div className="pt-14 border-b border-[#2a2a2a]">

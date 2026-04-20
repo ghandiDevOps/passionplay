@@ -93,7 +93,7 @@ async function handleUserCreated(data: ClerkUserData) {
     update: fields,
     create: {
       clerkId: data.id,
-      role:    "coach", // PassionPlay MVP : seuls les coachs créent un compte
+      role:    "participant",
       ...fields,
     },
   });

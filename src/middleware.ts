@@ -7,10 +7,13 @@ const isCoachRoute = createRouteMatcher([
   "/profile(.*)",
   "/earnings(.*)",
   "/onboarding(.*)",
+  "/analytics(.*)",
 ]);
 
 const isUserRoute = createRouteMatcher([
-  "/my/(.*)",
+  "/my(.*)",
+  "/api/auth/redirect",
+  "/api/reviews(.*)",
 ]);
 
 const isPublicRoute = createRouteMatcher([
@@ -21,8 +24,10 @@ const isPublicRoute = createRouteMatcher([
   "/sign-up(.*)",
   "/explore(.*)",
   "/coaches/(.*)",
+  "/legal/(.*)",
   "/api/webhooks/(.*)",
   "/api/cron/(.*)",
+  "/api/bookings/(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
