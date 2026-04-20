@@ -5,11 +5,15 @@ import { db } from "@/lib/db";
 
 async function getUserRole(userId: string | null) {
   if (!userId) return null;
-  const user = await db.user.findUnique({
-    where:  { clerkId: userId },
-    select: { role: true },
-  });
-  return user?.role ?? null;
+  try {
+    const user = await db.user.findUnique({
+      where:  { clerkId: userId },
+      select: { role: true },
+    });
+    return user?.role ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
