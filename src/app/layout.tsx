@@ -3,6 +3,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Barlow_Condensed } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Analytics } from "@vercel/analytics/next";
 import "@/styles/globals.css";
 
 const barlowCondensed = Barlow_Condensed({
@@ -51,6 +52,7 @@ export default function RootLayout({
           className={`${GeistSans.variable} ${GeistMono.variable} ${barlowCondensed.variable} font-sans bg-[#1a1a1a] text-white`}
         >
           {children}
+          <Analytics />
         </body>
       </html>
     </ClerkProvider>
