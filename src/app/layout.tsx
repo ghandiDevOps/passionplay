@@ -1,17 +1,22 @@
 import type { Metadata, Viewport } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
-import { Barlow_Condensed } from "next/font/google";
+import localFont from "next/font/local";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Analytics } from "@vercel/analytics/next";
 import "@/styles/globals.css";
 
-const barlowCondensed = Barlow_Condensed({
-  weight: ["400", "600", "700", "800", "900"],
-  style: ["normal", "italic"],
-  subsets: ["latin"],
+// Auto-hébergé dans public/fonts/ — pas de dépendance Google Fonts externe
+const barlowCondensed = localFont({
+  src: [
+    { path: "../../public/fonts/barlow-condensed-400.woff2", weight: "400", style: "normal" },
+    { path: "../../public/fonts/barlow-condensed-700.woff2", weight: "700", style: "normal" },
+    { path: "../../public/fonts/barlow-condensed-800.woff2", weight: "800", style: "normal" },
+    { path: "../../public/fonts/barlow-condensed-900.woff2", weight: "900", style: "normal" },
+  ],
   variable: "--font-barlow-condensed",
   display: "swap",
+  preload: true,
 });
 
 
