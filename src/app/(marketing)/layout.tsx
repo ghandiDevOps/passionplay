@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/lib/db";
 
@@ -27,11 +26,10 @@ export default async function MarketingLayout({ children }: { children: React.Re
 
           {/* Logo */}
           <Link href="/" className="shrink-0 flex items-center">
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/PassionPlay_logoavectext_svg.svg"
               alt="PassionPlay"
-              width={140}
-              height={48}
               className="h-8 w-auto"
               style={{ filter: "brightness(0) invert(1)" }}
             />

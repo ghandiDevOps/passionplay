@@ -1,7 +1,6 @@
 ﻿import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
 
 export default async function CoachLayout({
@@ -19,11 +18,10 @@ export default async function CoachLayout({
       <header className="hidden sm:block sticky top-0 z-40 bg-[#111]/95 backdrop-blur-sm border-b border-[#2a2a2a]">
         <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center">
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/PassionPlay_logoavectext_svg.svg"
               alt="PassionPlay"
-              width={130}
-              height={45}
               className="h-7 w-auto"
               style={{ filter: "brightness(0) invert(1)" }}
             />
@@ -42,11 +40,10 @@ export default async function CoachLayout({
       <header className="sm:hidden sticky top-0 z-40 bg-[#111]/95 backdrop-blur-sm border-b border-[#2a2a2a]">
         <div className="px-4 h-12 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center">
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/PassionPlay_logoavectext_svg.svg"
               alt="PassionPlay"
-              width={110}
-              height={38}
               className="h-6 w-auto"
               style={{ filter: "brightness(0) invert(1)" }}
             />

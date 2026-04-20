@@ -1,7 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
 
 export default async function PassionneLayout({ children }: { children: React.ReactNode }) {
@@ -15,11 +14,10 @@ export default async function PassionneLayout({ children }: { children: React.Re
       <header className="sticky top-0 z-40 bg-[#1a1a1a]/95 backdrop-blur-sm border-b border-[#2a2a2a]">
         <div className="max-w-lg mx-auto px-4 h-12 flex items-center justify-between">
           <Link href="/" className="flex items-center">
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/PassionPlay_logoavectext_svg.svg"
               alt="PassionPlay"
-              width={120}
-              height={41}
               className="h-7 w-auto"
               style={{ filter: "brightness(0) invert(1)" }}
             />
