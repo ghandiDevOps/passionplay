@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import Link from "next/link";
 import { SessionForm } from "@/components/session/session-form";
 
-export const metadata = { title: "Nouvelle session · PassionPlay" };
+export const metadata = { title: "Nouvelle session · Passion Spark" };
 
 export default async function NewSessionPage() {
   const { userId } = await auth();

@@ -163,7 +163,7 @@ function generateIcalUrl({
   const ical = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//PassionPlay//FR",
+    "PRODID:-//Passion Spark//FR",
     "BEGIN:VEVENT",
     `DTSTART:${format(start)}`,
     `DTEND:${format(end)}`,

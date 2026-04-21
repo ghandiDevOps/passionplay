@@ -191,7 +191,7 @@ function exportPDF(data: Record<string, any>[], filename: string, title: string)
         <thead><tr>${headers.map(h => `<th>${h.toUpperCase()}</th>`).join('')}</tr></thead>
         <tbody>${tableRows}</tbody>
       </table>
-      <div class="footer">PassionPlay — Vis ta passion. Maintenant.</div>
+      <div class="footer">Passion Spark — Vis ta passion. Maintenant.</div>
     </body>
     </html>
   `;

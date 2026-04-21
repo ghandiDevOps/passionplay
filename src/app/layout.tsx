@@ -22,16 +22,17 @@ const barlowCondensed = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: "PassionPlay — Vis ta passion",
-    template: "%s | PassionPlay",
+    default: "Passion Spark — Allume ta prochaine passion.",
+    template: "%s | Passion Spark",
   },
   description:
-    "Des sessions de passion en petit groupe, guidées par des experts. Découverte ou progression — réserve en 30 secondes.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "https://passionplay.fr"),
+    "Spark your next passion. Sessions collectives ultra-ciblées avec des passionnés. Découverte ou progression — réserve en 30 secondes.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "https://passionspark.fr"),
   openGraph: {
     type: "website",
-    siteName: "PassionPlay",
+    siteName: "Passion Spark",
     locale: "fr_FR",
+    url: "https://passionspark.fr",
   },
   twitter: {
     card: "summary_large_image",

@@ -7,7 +7,7 @@ import Link from "next/link";
 import { BookingQrCard } from "@/components/booking/booking-qr-card";
 import { ReviewForm } from "@/components/passionné/review-form";
 
-export const metadata = { title: "Mon espace · PassionPlay" };
+export const metadata = { title: "Mon espace · Passion Spark" };
 
 export default async function EspacePassionné() {
   const { userId } = await auth();

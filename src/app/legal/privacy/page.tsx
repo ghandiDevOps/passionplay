@@ -1,6 +1,6 @@
 ﻿import Link from "next/link";
 
-export const metadata = { title: "Confidentialité · PassionPlay" };
+export const metadata = { title: "Confidentialité · Passion Spark" };
 
 export default function PrivacyPage() {
   return (
@@ -36,14 +36,14 @@ export default function PrivacyPage() {
             (authentification), Supabase (base de données), dans le cadre strict de la fourniture du service.
           </LegalSection>
           <LegalSection title="Cookies">
-            PassionPlay utilise uniquement des cookies techniques nécessaires au fonctionnement du service (session,
+            Passion Spark utilise uniquement des cookies techniques nécessaires au fonctionnement du service (session,
             authentification). Aucun cookie publicitaire ou de tracking tiers.
           </LegalSection>
           <LegalSection title="Vos droits (RGPD)">
             Vous disposez d&apos;un droit d&apos;accès, de rectification, de suppression et de portabilité de vos données.
             Pour exercer ces droits, contactez-nous à{" "}
-            <a href="mailto:privacy@passionplay.fr" className="text-[#FF7A00] hover:text-[#FFB700] transition-colors">
-              privacy@passionplay.fr
+            <a href="mailto:privacy@passionspark.fr" className="text-[#FF7A00] hover:text-[#FFB700] transition-colors">
+              privacy@passionspark.fr
             </a>.
           </LegalSection>
           <LegalSection title="Conservation">

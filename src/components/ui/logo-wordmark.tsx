@@ -10,7 +10,7 @@ export function LogoWordmark({ className, style }: Props) {
       viewBox="0 0 2048 707"
       className={className}
       style={style}
-      aria-label="PassionPlay"
+      aria-label="Passion Spark"
     >
       <defs>
         <linearGradient id="wm-g1" gradientUnits="userSpaceOnUse" x1="1657.13" y1="485.641" x2="1684.07" y2="312.08">

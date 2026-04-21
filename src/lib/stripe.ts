@@ -6,20 +6,20 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   typescript: true,
 });
 
-// ─── Répartition PassionPlay ──────────────────────────────────────────────────
-// Coach      : 70%
-// PassionPlay: 22%  (frais de plateforme retenus via application_fee_amount)
-// Parrainage :  7%  (inclus dans les 30% non-coach ; reversé au référent si applicable)
+// ─── Répartition Passion Spark ───────────────────────────────────────────────
+// Coach         : 70%
+// Passion Spark : 23%  (frais de plateforme retenus via application_fee_amount)
+// Parrainage    :  7%  (inclus dans les 30% non-coach ; reversé au référent si applicable)
 export const COACH_SHARE        = 0.70;
-export const PLATFORM_FEE      = 0.22;
+export const PLATFORM_FEE      = 0.23;
 export const REFERRAL_FEE      = 0.07;
 
 /** @deprecated use PLATFORM_FEE */
 export const PLATFORM_FEE_PERCENT = PLATFORM_FEE;
 
 /**
- * Calcule la décomposition complète d'un paiement PassionPlay.
- * application_fee_amount = frais PassionPlay (22%) + parrainage (7%) = 29%
+ * Calcule la décomposition complète d'un paiement Passion Spark.
+ * application_fee_amount = frais Passion Spark (23%) + parrainage (7%) = 30%
  * Le coach reçoit 70% via Stripe Connect Destination Charge.
  * Note : si le coach est lui-même le référent, le 7% lui est reversé manuellement
  * (ou via un Transfer séparé post-session).
@@ -30,7 +30,7 @@ export function calculateAmounts(
 ) {
   const platformFeeCents = Math.round(priceCents * PLATFORM_FEE);
   const referralFeeCents = Math.round(priceCents * REFERRAL_FEE);
-  // application_fee = tout ce que PassionPlay retient via Stripe (22% + 7%)
+  // application_fee = tout ce que Passion Spark retient via Stripe (23% + 7%)
   const applicationFeeCents = platformFeeCents + referralFeeCents;
   const coachNetCents = priceCents - applicationFeeCents; // = 70% arrondi
   return {

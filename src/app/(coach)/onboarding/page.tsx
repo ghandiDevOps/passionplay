@@ -149,7 +149,7 @@ export default function OnboardingPage() {
                 REÇOIS TES PAIEMENTS
               </h1>
               <p className="text-[#555] mt-2 text-sm leading-relaxed">
-                PassionPlay utilise Stripe pour virer tes revenus directement sur ton
+                Passion Spark utilise Stripe pour virer tes revenus directement sur ton
                 compte bancaire. L&apos;inscription prend 3 minutes.
               </p>
             </div>

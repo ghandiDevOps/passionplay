@@ -1,6 +1,6 @@
 ﻿import Link from "next/link";
 
-export const metadata = { title: "CGU · PassionPlay" };
+export const metadata = { title: "CGU · Passion Spark" };
 
 export default function CguPage() {
   return (
@@ -24,24 +24,24 @@ export default function CguPage() {
 
         <div className="space-y-8">
           <LegalSection title="1. Objet">
-            PassionPlay est une plateforme de mise en relation entre des coachs proposant des sessions collectives et
+            Passion Spark est une plateforme de mise en relation entre des coachs proposant des sessions collectives et
             des participants souhaitant y assister. Les présentes CGU régissent l&apos;accès et l&apos;utilisation du service.
           </LegalSection>
           <LegalSection title="2. Inscription et compte">
-            L&apos;utilisation de PassionPlay nécessite la création d&apos;un compte. L&apos;utilisateur s&apos;engage à fournir des
+            L&apos;utilisation de Passion Spark nécessite la création d&apos;un compte. L&apos;utilisateur s&apos;engage à fournir des
             informations exactes et à maintenir la confidentialité de ses identifiants.
           </LegalSection>
           <LegalSection title="3. Sessions et réservations">
-            Les sessions sont créées par des coachs indépendants. PassionPlay n&apos;est pas responsable du contenu ou de la
+            Les sessions sont créées par des coachs indépendants. Passion Spark n&apos;est pas responsable du contenu ou de la
             qualité des sessions. Le paiement est sécurisé via Stripe. Toute réservation confirmée et payée est
             définitive sauf annulation par le coach.
           </LegalSection>
           <LegalSection title="4. Commission et paiements">
-            PassionPlay prélève une commission de 22% sur chaque réservation. Une commission additionnelle de 7% peut
+            Passion Spark prélève une commission de 23% sur chaque réservation. Une commission additionnelle de 7% peut
             s&apos;appliquer en cas de parrainage. Le coach reçoit 70% du montant (ou 77% sans parrainage tiers).
           </LegalSection>
           <LegalSection title="5. Propriété intellectuelle">
-            Tout le contenu publié sur PassionPlay (textes, logos, interface) est protégé par le droit de la propriété
+            Tout le contenu publié sur Passion Spark (textes, logos, interface) est protégé par le droit de la propriété
             intellectuelle. Toute reproduction sans autorisation est interdite.
           </LegalSection>
           <LegalSection title="6. Données personnelles">

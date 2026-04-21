@@ -139,7 +139,7 @@ export function StepPricing({ data, onChange }: Props) {
               <span className="text-[#888]">{formatEuros(grossTotal)} brut</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#555]">Commission PassionPlay (30%)</span>
+              <span className="text-[#555]">Commission Passion Spark (30%)</span>
               <span className="text-[#555]">−{formatEuros(platformTotal)}</span>
             </div>
             <div className="flex justify-between font-semibold">

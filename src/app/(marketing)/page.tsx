@@ -57,7 +57,7 @@ export default async function HomePage() {
       {/* ── HERO ── */}
       <section className="relative min-h-screen flex items-end pb-16 pt-14">
         <div className="absolute inset-0">
-          <img src={HERO_IMG} alt="PassionPlay" className="w-full h-full object-cover" />
+          <img src={HERO_IMG} alt="Passion Spark" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-[#1a1a1a]/60 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#1a1a1a]/90 via-[#1a1a1a]/40 to-transparent" />
         </div>
@@ -268,9 +268,9 @@ export default async function HomePage() {
           <div className="passion-sep mb-10" />
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-10">
             <div>
-              <span className="font-display text-3xl text-white block mb-1">PASSIONPLAY</span>
+              <span className="font-display text-3xl text-white block mb-1">PASSION SPARK</span>
               <span className="font-display-md text-xs text-[#FF7A00] tracking-widest">
-                VIVEZ VOTRE PASSION. TRANSMETTEZ LA VÔTRE.
+                SPARK YOUR NEXT PASSION.
               </span>
             </div>
             <div className="flex flex-wrap gap-6 md:gap-10">
@@ -281,7 +281,7 @@ export default async function HomePage() {
             <p className="text-[#333] text-xs font-sans hidden md:block">Paris · Lyon · Marseille · 14 villes</p>
           </div>
           <div className="passion-sep mb-6" />
-          <p className="text-[#333] text-xs font-sans">© 2026 PassionPlay. Tous droits réservés.</p>
+          <p className="text-[#333] text-xs font-sans">© 2026 Passion Spark. Tous droits réservés.</p>
         </div>
       </footer>
 

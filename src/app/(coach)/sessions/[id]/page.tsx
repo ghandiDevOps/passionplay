@@ -12,7 +12,7 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props) {
-  return { title: `Session · PassionPlay` };
+  return { title: `Session · Passion Spark` };
 }
 
 export default async function SessionDetailPage({ params }: Props) {

@@ -1,26 +1,29 @@
-# PassionPlay — Contexte projet pour Claude
+# Passion Spark — Contexte projet pour Claude
 
 > Ce fichier est lu automatiquement à chaque session.
 > Pour le contexte complet → lire `../MEMORY.md`, `../SECURITY.md`, `../CODE_GUIDE.md`
 
 ---
 
-## C'est quoi PassionPlay
+## C'est quoi Passion Spark
 
 Plateforme de sessions collectives ultra-ciblées : un coach propose une session d'1h sur **une seule compétence précise** (ex: "tir à 3 points", "défense au sol MMA") à 10-20 personnes, entre 13€ et 20€. Mobile-first, réservation en < 30 secondes. On commence par le sport, l'architecture est pensée multi-domaines.
+
+**Tagline :** "Spark your next passion." / "Allume ta prochaine passion."
+**Domaine :** passionspark.fr
 
 ---
 
 ## Règles métier à ne jamais changer sans validation
 
 ```
-Prix session       13€ → 20€  (MIN_PRICE_CENTS / MAX_PRICE_CENTS)
-Groupe             10 → 20 personnes
-Commission coach   70%
-Commission PassionPlay  22%
-Commission parrainage    7%  (reversé à qui amène le client — coach ou PassionPlay)
-Si coach = référent     77%  (70 + 7)
-application_fee_amount  29%  (22 + 7) — calculé dans src/lib/stripe.ts UNIQUEMENT
+Prix session           13€ → 20€  (MIN_PRICE_CENTS / MAX_PRICE_CENTS)
+Groupe                 10 → 20 personnes
+Commission coach       70%
+Commission Passion Spark  23%
+Commission parrainage   7%  (reversé à qui amène le client — coach ou Passion Spark)
+Si coach = référent    77%  (70 + 7)
+application_fee_amount 30%  (23 + 7) — calculé dans src/lib/stripe.ts UNIQUEMENT
 ```
 
 ---

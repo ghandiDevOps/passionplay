@@ -6,7 +6,7 @@ import { formatSessionDateTime } from "@/lib/utils/format-date";
 import { formatPrice } from "@/lib/utils/format-price";
 import Link from "next/link";
 
-export const metadata = { title: "Mes billets · PassionPlay" };
+export const metadata = { title: "Mes billets · Passion Spark" };
 
 export default async function MyBookingsPage() {
   const { userId } = await auth();

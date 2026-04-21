@@ -1,6 +1,6 @@
 ﻿import Link from "next/link";
 
-export const metadata = { title: "Contact · PassionPlay" };
+export const metadata = { title: "Contact · Passion Spark" };
 
 export default function ContactPage() {
   return (
@@ -24,20 +24,20 @@ export default function ContactPage() {
           <ContactCard
             icon="📧"
             title="EMAIL GÉNÉRAL"
-            value="hello@passionplay.fr"
-            href="mailto:hello@passionplay.fr"
+            value="hello@passionspark.fr"
+            href="mailto:hello@passionspark.fr"
           />
           <ContactCard
             icon="🔒"
             title="DONNÉES PERSONNELLES (RGPD)"
-            value="privacy@passionplay.fr"
-            href="mailto:privacy@passionplay.fr"
+            value="privacy@passionspark.fr"
+            href="mailto:privacy@passionspark.fr"
           />
           <ContactCard
             icon="🤝"
             title="PARTENARIATS & PRESSE"
-            value="partenaires@passionplay.fr"
-            href="mailto:partenaires@passionplay.fr"
+            value="partenaires@passionspark.fr"
+            href="mailto:partenaires@passionspark.fr"
           />
         </div>
 
@@ -56,7 +56,7 @@ export default function ContactPage() {
         </div>
 
         <p className="mt-10 text-xs text-[#333] text-center">
-          PassionPlay · Paris, France · © 2026
+          Passion Spark · Paris, France · © 2026
         </p>
       </div>
     </main>

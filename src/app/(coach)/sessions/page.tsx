@@ -5,7 +5,7 @@ import Link from "next/link";
 import { formatPrice } from "@/lib/utils/format-price";
 import { formatSessionDateTime } from "@/lib/utils/format-date";
 
-export const metadata = { title: "Mes sessions · PassionPlay" };
+export const metadata = { title: "Mes sessions · Passion Spark" };
 
 export default async function SessionsPage() {
   const { userId } = await auth();

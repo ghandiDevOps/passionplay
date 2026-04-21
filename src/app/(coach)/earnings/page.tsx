@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { formatPrice } from "@/lib/utils/format-price";
 import { formatSessionDateTime } from "@/lib/utils/format-date";
 
-export const metadata = { title: "Revenus · PassionPlay" };
+export const metadata = { title: "Revenus · Passion Spark" };
 
 export default async function EarningsPage() {
   const { userId } = await auth();

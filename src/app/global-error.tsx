@@ -10,7 +10,7 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("[PassionPlay GlobalError]", error);
+    console.error("[Passion Spark GlobalError]", error);
   }, [error]);
 
   return (

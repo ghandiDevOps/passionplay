@@ -5,7 +5,7 @@ import { ExploreClient } from "@/components/marketing/explore-client";
 import type { SessionCardData } from "@/components/marketing/session-card";
 
 export const metadata = {
-  title: "Sessions · PassionPlay",
+  title: "Sessions · Passion Spark",
   description: "Toutes les sessions disponibles. Réservez en 30 secondes.",
 };
 

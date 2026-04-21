@@ -5,7 +5,7 @@ import Link from "next/link";
 import { formatPrice } from "@/lib/utils/format-price";
 import { formatSessionDateTime } from "@/lib/utils/format-date";
 
-export const metadata = { title: "Dashboard · PassionPlay" };
+export const metadata = { title: "Dashboard · Passion Spark" };
 
 export default async function DashboardPage() {
   const { userId } = await auth();
