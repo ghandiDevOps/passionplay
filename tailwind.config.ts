@@ -11,7 +11,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Couleurs principales PassionPlay — Palette FLAMME
+        // Couleurs principales Passion Spark — Palette FLAMME
         passion: {
           50:  "#fff9e6",
           100: "#fff0b3",

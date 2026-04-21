@@ -149,7 +149,7 @@ src/app/(coach)/sessions/[id]/scan/page.tsx ← scanner QR côté coach
 
 ---
 
-## Structure des dossiers (racine PassionPlay/)
+## Structure des dossiers (racine du projet)
 
 ```
 docs/          ← documentation complète

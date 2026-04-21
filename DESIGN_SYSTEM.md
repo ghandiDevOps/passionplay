@@ -1,4 +1,4 @@
-# PassionPlay — Design System
+# Passion Spark — Design System
 
 > Ce fichier est lu par Claude avant toute intervention design.
 > Il contient la source de vérité visuelle du projet.
@@ -7,7 +7,7 @@
 
 ## 1. Philosophie
 
-PassionPlay est une marque **énergique, directe, premium dark**.
+Passion Spark est une marque **énergique, directe, premium dark**.
 Inspirée des marques sportives haut de gamme (Nike, Gymshark) + tech startup.
 
 - **Police display** : Impact / Arial Black — titres en majuscules

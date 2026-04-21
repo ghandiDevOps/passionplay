@@ -1,4 +1,4 @@
-# Prompt PassionPlay — Pour Figma AI / Framer AI / Webflow AI / v0
+# Prompt Passion Spark — Pour Figma AI / Framer AI / Webflow AI / v0
 
 Copie-colle ce prompt tel quel dans l'IA de ton outil.
 
@@ -7,7 +7,7 @@ Copie-colle ce prompt tel quel dans l'IA de ton outil.
 ## PROMPT (version complète)
 
 ```
-Design a modern, mobile-first landing page for "PassionPlay" — a French platform
+Design a modern, mobile-first landing page for "Passion Spark" — a French platform
 where coaches offer 1-hour collective skill sessions (sports, passion, arts) at
 13–20€ per person, in groups of 10–20.
 
@@ -15,13 +15,13 @@ where coaches offer 1-hour collective skill sessions (sports, passion, arts) at
 
 ### BRAND IDENTITY
 
-Name: PassionPlay
+Name: Passion Spark
 Tagline: "Vis ta passion. Maintenant."
 Tone: Energetic, bold, direct. Like a sports brand meets a tech startup.
 Language: French (UI copy in French)
 
 Logo: A flame icon (orange-to-yellow gradient, portrait shape ~2:3 ratio)
-      + "PassionPlay" wordmark in bold next to it.
+      + "Passion Spark" wordmark in bold next to it.
       The flame represents passion, energy, live action.
 
 ---
@@ -62,7 +62,7 @@ Mono labels: 10–11px, weight 700, letter-spacing 0.1em, uppercase
 #### 1. STICKY HEADER
 - Glass effect: background rgba(250,250,250,0.88) + blur 12px
 - Bottom border: 1px solid #EBEBEB
-- Left: Flame logo icon (27×40px) + "PassionPlay" text in flame gradient, bold 19px
+- Left: Flame logo icon (27×40px) + "Passion Spark" text in flame gradient, bold 19px
 - Right nav: "Sessions" link | "Connexion" link | "Devenir coach" CTA button
 - CTA button: flame gradient bg, white text, rounded-lg, subtle orange box-shadow
 
@@ -92,7 +92,7 @@ Mono labels: 10–11px, weight 700, letter-spacing 0.1em, uppercase
 
 #### 4. "C'EST QUOI ?" SECTION
 - White background
-- Section title with thin vertical flame bar on left: "C'est quoi PassionPlay ?"
+- Section title with thin vertical flame bar on left: "C'est quoi Passion Spark ?"
 - Short paragraph explaining the concept
 - 2-column card grid:
   Card 1 "Découverte" — top border #16a34a (green), emoji 🌱, "Première fois", "Zéro prérequis. Juste l'envie d'essayer."
@@ -157,7 +157,7 @@ Mono labels: 10–11px, weight 700, letter-spacing 0.1em, uppercase
 - Right: 2 link columns
   Produit: Sessions | Devenir coach | Se connecter
   Légal:   CGU | Confidentialité | Contact
-- Bottom bar: "© 2026 PassionPlay · Paris" left | "Made with 🔥 in France" right
+- Bottom bar: "© 2026 Passion Spark · Paris" left | "Made with 🔥 in France" right
 
 ---
 
@@ -191,7 +191,7 @@ Logo flame icon: /public/logo.svg
   → Use at 27×40px in header, 20×30px in footer
 
 Logo wordmark: /public/logo-wordmark.svg
-  → Flame icon + "PassionPlay" text in flame gradient
+  → Flame icon + "Passion Spark" text in flame gradient
   → Use at 174×37px in header
 
 ---
@@ -212,7 +212,7 @@ Logo wordmark: /public/logo-wordmark.svg
 ## VERSION COURTE (pour outils avec limite de tokens)
 
 ```
-Create a mobile-first landing page for "PassionPlay" — a French platform
+Create a mobile-first landing page for "Passion Spark" — a French platform
 for 1h collective sports coaching sessions at 13–20€.
 
 Design style:
@@ -224,7 +224,7 @@ Design style:
 - Mobile-first, max-width 560px
 
 Sections (top to bottom):
-1. Sticky glass header — flame logo + "PassionPlay" wordmark + nav
+1. Sticky glass header — flame logo + "Passion Spark" wordmark + nav
 2. Hero — ghost "P" letter bg, vertical flame bar, big uppercase title
    "VIS TA PASSION. MAINTENANT." + sport filter pills + 2 CTAs
 3. Dark stats bar — 127+ sessions · 2k+ passionnés · 14 villes · 4.9★

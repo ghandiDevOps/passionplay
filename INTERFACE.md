@@ -1,4 +1,4 @@
-# PassionPlay — Contrat d'interface Frontend / Backend
+# Passion Spark — Contrat d'interface Frontend / Backend
 
 > Ce fichier est le **contrat partagé** entre Manus AI (frontend) et Claude (backend).
 > Les deux IAs doivent le respecter. Toute modification doit être validée par le propriétaire du projet.
