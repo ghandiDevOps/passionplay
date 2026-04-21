@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Theme tokens ─────────────────────────────────────────────── */
+:root {
+  --color-bg:       #f5f4f1;
+  --color-bg-nav:   rgba(245, 244, 241, 0.95);
+  --color-bg-card:  #ffffff;
+  --color-border:   #e2e1de;
+  --color-text:     #111111;
+  --color-muted:    #666666;
+  --color-scroll:   #ccc;
+  /* Logo: in light mode keep it dark (no filter needed) */
+  --logo-filter:    none;
+}
+
+.dark {
+  --color-bg:       #1a1a1a;
+  --color-bg-nav:   rgba(26, 26, 26, 0.95);
+  --color-bg-card:  #1e1e1e;
+  --color-border:   #2a2a2a;
+  --color-text:     #ffffff;
+  --color-muted:    #888888;
+  --color-scroll:   #333;
+  /* Logo: in dark mode invert to white */
+  --logo-filter:    brightness(0) invert(1);
+}
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
@@ -9,13 +34,15 @@
   }
 
   body {
-    @apply bg-[#1a1a1a] text-white antialiased;
+    @apply antialiased;
+    background-color: var(--color-bg);
+    color: var(--color-text);
     font-family: var(--font-geist-sans), -apple-system, sans-serif;
   }
 
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { @apply bg-transparent; }
-  ::-webkit-scrollbar-thumb { background: #333; border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb { background: var(--color-scroll); border-radius: 9999px; }
 }
 
 @layer components {
@@ -171,8 +198,8 @@
 
   .sticky-bottom {
     @apply fixed bottom-0 left-0 right-0 backdrop-blur border-t px-5 py-4 z-50 max-w-lg mx-auto;
-    background: rgba(26, 26, 26, 0.95);
-    border-color: #2a2a2a;
+    background: var(--color-bg-nav);
+    border-color: var(--color-border);
     padding-bottom: calc(1rem + env(safe-area-inset-bottom));
   }
 

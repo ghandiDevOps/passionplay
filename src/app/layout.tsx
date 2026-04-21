@@ -53,8 +53,16 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="fr" suppressHydrationWarning>
+        <head>
+          {/* Anti-flash: apply theme class before first paint */}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `(function(){var t=localStorage.getItem('pp-theme');document.documentElement.classList.toggle('dark',t?t==='dark':true);})();`,
+            }}
+          />
+        </head>
         <body
-          className={`${GeistSans.variable} ${GeistMono.variable} ${barlowCondensed.variable} font-sans bg-[#1a1a1a] text-white`}
+          className={`${GeistSans.variable} ${GeistMono.variable} ${barlowCondensed.variable} font-sans`}
         >
           {children}
           <Analytics />
