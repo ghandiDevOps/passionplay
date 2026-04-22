@@ -29,7 +29,7 @@ export function ExploreClient({ sessions, categories }: ExploreClientProps) {
           <button
             key={filter}
             onClick={() => setActiveFilter(filter)}
-            className={`shrink-0 font-display-md text-xs px-4 py-2 border transition-colors duration-120 whitespace-nowrap ${
+            className={`shrink-0 font-display-md text-xs px-4 py-2 border transition-colors duration-200 whitespace-nowrap cursor-pointer ${
               activeFilter === filter
                 ? "bg-[#FF7A00] border-[#FF7A00] text-white"
                 : "border-[#2a2a2a] text-[#555] hover:border-[#FF7A00] hover:text-[#FF7A00]"

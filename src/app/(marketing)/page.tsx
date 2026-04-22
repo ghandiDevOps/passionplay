@@ -60,6 +60,8 @@ export default async function HomePage() {
           <img src={HERO_IMG} alt="Passion Spark" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-[#1a1a1a]/60 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#1a1a1a]/90 via-[#1a1a1a]/40 to-transparent" />
+          {/* Animated dot grid overlay — brand energy */}
+          <div className="absolute inset-0 hero-pattern pointer-events-none opacity-40" />
         </div>
 
         <span className="watermark-number right-0 bottom-20 hidden lg:block">99</span>
@@ -91,7 +93,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── STATS TICKER ── */}
-      <div className="bg-[#111] border-y border-[#2a2a2a] overflow-hidden py-3">
+      <div className="bg-[#111] border-y border-[#2a2a2a] overflow-hidden py-3 ticker-track">
         <div className="animate-ticker whitespace-nowrap">
           {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
             <span key={i} className="inline-flex items-center gap-6 px-8">
@@ -114,7 +116,7 @@ export default async function HomePage() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-4">
-          <div className="bg-[#1e1e1e] border border-[#2a2a2a] p-6 lg:p-8 relative overflow-hidden group hover:border-[#10b981]/40 transition-colors duration-200">
+          <div className="bg-[#1e1e1e] border border-[#2a2a2a] p-6 lg:p-8 relative overflow-hidden group hover:border-[#10b981]/50 transition-colors duration-200 cursor-default">
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#10b981]/5 rounded-full -translate-y-1/2 translate-x-1/2" />
             <div className="flex items-start justify-between mb-4">
               <span className="badge-discover">DÉCOUVERTE</span>
@@ -126,7 +128,7 @@ export default async function HomePage() {
               Zéro prérequis. Zéro pression. Juste l&apos;envie — et un passionné qui sait comment la transmettre.
             </p>
           </div>
-          <div className="bg-[#1e1e1e] border border-[#2a2a2a] p-6 lg:p-8 relative overflow-hidden group hover:border-[#3b82f6]/40 transition-colors duration-200">
+          <div className="bg-[#1e1e1e] border border-[#2a2a2a] p-6 lg:p-8 relative overflow-hidden group hover:border-[#3b82f6]/50 transition-colors duration-200 cursor-default">
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#3b82f6]/5 rounded-full -translate-y-1/2 translate-x-1/2" />
             <div className="flex items-start justify-between mb-4">
               <span className="badge-progress">PROGRESSION</span>
@@ -156,8 +158,8 @@ export default async function HomePage() {
               { n: "02", title: "TU PAIES",   desc: "Apple Pay, Google Pay ou carte. 2 taps. Pas de compte obligatoire. Confirmation immédiate." },
               { n: "03", title: "TU VIS",     desc: "Tu arrives. Tu montres ton QR code. Tu vis ta passion pendant 1h avec des gens qui la partagent." },
             ].map((step) => (
-              <div key={step.n} className="bg-[#111] p-8 lg:p-10 group">
-                <span className="font-display text-[5rem] lg:text-[7rem] text-[#FF7A00]/20 leading-none group-hover:text-[#FF7A00]/40 transition-colors duration-200 block">
+              <div key={step.n} className="bg-[#111] p-8 lg:p-10 group hover:bg-[#141414] transition-colors duration-200">
+                <span className="font-display text-[5rem] lg:text-[7rem] text-[#FF7A00]/20 leading-none group-hover:text-[#FF7A00]/50 transition-colors duration-300 block">
                   {step.n}
                 </span>
                 <h3 className="font-display text-2xl text-white mb-3 mt-2">{step.title}</h3>
@@ -237,10 +239,10 @@ export default async function HomePage() {
                 <p className="text-[#444] text-xs font-sans mb-4">
                   Jusqu&apos;à <span className="text-[#FF7A00]">77%</span> si tu remplis toi-même via tes réseaux.
                 </p>
-                <div className="w-full h-8 flex overflow-hidden border border-[#2a2a2a]">
-                  <div className="bg-[#FF7A00] flex items-center justify-center font-display-md text-xs text-white" style={{ width: "70%" }}>70% COACH</div>
-                  <div className="bg-[#FF7A00]/30 flex items-center justify-center font-display-md text-[9px] text-white/60" style={{ width: "22%" }}>22%</div>
-                  <div className="bg-[#222] flex items-center justify-center font-display-md text-[9px] text-white/30" style={{ width: "8%" }}>7%</div>
+                <div className="w-full h-9 flex overflow-hidden border border-[#FF7A00]/20 rounded-sm">
+                  <div className="bg-[#FF7A00] flex items-center justify-center font-display-md text-xs text-white transition-all duration-300" style={{ width: "70%" }}>70% COACH</div>
+                  <div className="bg-[#FF7A00]/25 flex items-center justify-center font-display-md text-[9px] text-white/50 border-l border-[#FF7A00]/20" style={{ width: "23%" }}>23%</div>
+                  <div className="bg-[#1a1a1a] flex items-center justify-center font-display-md text-[9px] text-white/25 border-l border-[#333]" style={{ width: "7%" }}>7%</div>
                 </div>
                 <div className="flex justify-between mt-2 text-[10px] text-[#444] font-sans">
                   <span>Tes revenus</span>

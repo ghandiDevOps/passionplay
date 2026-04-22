@@ -269,8 +269,8 @@
 }
 
 @keyframes passion-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 149, 63, 0.4); }
-  50%       { box-shadow: 0 0 0 12px rgba(232, 149, 63, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 122, 0, 0.4); }
+  50%       { box-shadow: 0 0 0 16px rgba(255, 122, 0, 0); }
 }
 
 @keyframes fade-up {
@@ -283,8 +283,20 @@
   100% { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes grid-drift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 32px 32px; }
+}
+
+/* ── Hero animated dot pattern ───────────────────────────────────── */
+.hero-pattern {
+  background-image: radial-gradient(circle, rgba(255,122,0,0.18) 1px, transparent 1px);
+  background-size: 32px 32px;
+  animation: grid-drift 30s linear infinite;
+}
+
 .pulse-orange {
-  animation: passion-pulse 3s ease-in-out infinite;
+  animation: passion-pulse 2.5s ease-in-out infinite;
 }
 
 .animate-ticker {
@@ -292,6 +304,36 @@
   animation: ticker-scroll 20s linear infinite;
 }
 
+/* Pause ticker on hover */
+.ticker-track:hover .animate-ticker {
+  animation-play-state: paused;
+}
+
 .animate-fade-up {
   animation: fade-up 0.6s ease-out both;
+}
+
+/* ── Focus states ────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid #FF7A00;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ── Prefers reduced motion ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-ticker,
+  .hero-pattern,
+  .animate-fade-up,
+  .pulse-orange,
+  .session-card,
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .session-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
 }
